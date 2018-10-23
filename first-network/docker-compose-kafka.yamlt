@@ -6,182 +6,182 @@
 version: '2'
 
 volumes:
-  ca.org1.example.com:
-  ca.org2.example.com:
-  orderer0.example.com:
-  orderer1.example.com:
-  peer0.org1.example.com:
-  peer1.org1.example.com:
-  peer0.org2.example.com:
-  peer1.org2.example.com:
+  ca.org1.trade.com:
+  ca.org2.trade.com:
+  orderer0.trade.com:
+  orderer1.trade.com:
+  peer0.org1.trade.com:
+  peer1.org1.trade.com:
+  peer0.org2.trade.com:
+  peer1.org2.trade.com:
 
 networks:
   byfn:
     
 services:
-  ca.org1.example.com:
+  ca.org1.trade.com:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-org1
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/09e2be6bc3ddad0c92ac32957386d22c27bf50f20af58bd081ab3c612d03c8c4_sk
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/5d93523eae60c03cf1fb64e4e99e645b04b8ba129933c89f7755185f05754527_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/09e2be6bc3ddad0c92ac32957386d22c27bf50f20af58bd081ab3c612d03c8c4_sk
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/5d93523eae60c03cf1fb64e4e99e645b04b8ba129933c89f7755185f05754527_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org1.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-org1
 
-  ca.org2.example.com:
+  ca.org2.trade.com:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-org2
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e4888c01ed169afb2a243de4adaf848e1627a58059568a23b2b3b3b22d56342d_sk
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e4888c01ed169afb2a243de4adaf848e1627a58059568a23b2b3b3b22d56342d_sk
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org2.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-org2
 
-  orderer0.example.com:
+  orderer0.trade.com:
     extends:
       file:   base/docker-compose-base.yaml
-      service: orderer0.example.com
-    container_name: orderer0.example.com
+      service: orderer0.trade.com
+    container_name: orderer0.trade.com
     depends_on:
-      - kafka0.example.com
-      - kafka1.example.com
-      - kafka2.example.com
-      - kafka3.example.com  
+      - kafka0.trade.com
+      - kafka1.trade.com
+      - kafka2.trade.com
+      - kafka3.trade.com  
     networks:
       - byfn
       
-  orderer1.example.com:
+  orderer1.trade.com:
     extends:
       file:   base/docker-compose-base.yaml
-      service: orderer1.example.com
-    container_name: orderer1.example.com
+      service: orderer1.trade.com
+    container_name: orderer1.trade.com
     depends_on:
-      - kafka0.example.com
-      - kafka1.example.com
-      - kafka2.example.com
-      - kafka3.example.com  
+      - kafka0.trade.com
+      - kafka1.trade.com
+      - kafka2.trade.com
+      - kafka3.trade.com  
     networks:
       - byfn      
 
-  peer0.org1.example.com:
-    container_name: peer0.org1.example.com
+  peer0.org1.trade.com:
+    container_name: peer0.org1.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org1.example.com
+      service: peer0.org1.trade.com
     networks:
       - byfn      
 
-  peer1.org1.example.com:
-    container_name: peer1.org1.example.com
+  peer1.org1.trade.com:
+    container_name: peer1.org1.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org1.example.com
+      service: peer1.org1.trade.com
     networks:
       - byfn      
       
-  peer0.org2.example.com:
-    container_name: peer0.org2.example.com
+  peer0.org2.trade.com:
+    container_name: peer0.org2.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org2.example.com
+      service: peer0.org2.trade.com
     networks:
       - byfn      
 
-  peer1.org2.example.com:
-    container_name: peer1.org2.example.com
+  peer1.org2.trade.com:
+    container_name: peer1.org2.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org2.example.com
+      service: peer1.org2.trade.com
     networks:
       - byfn
 
-  zookeeper0.example.com:
-    container_name: zookeeper0.example.com
+  zookeeper0.trade.com:
+    container_name: zookeeper0.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: zookeeper0.example.com
+      service: zookeeper0.trade.com
     networks:
       - byfn      
 
-  zookeeper1.example.com:
-    container_name: zookeeper1.example.com
+  zookeeper1.trade.com:
+    container_name: zookeeper1.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: zookeeper1.example.com
+      service: zookeeper1.trade.com
     networks:
       - byfn      
 
-  zookeeper2.example.com:
-    container_name: zookeeper2.example.com
+  zookeeper2.trade.com:
+    container_name: zookeeper2.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: zookeeper2.example.com
+      service: zookeeper2.trade.com
     networks:
       - byfn      
 
-  kafka0.example.com:
-    container_name: kafka0.example.com
+  kafka0.trade.com:
+    container_name: kafka0.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka0.example.com
+      service: kafka0.trade.com
     networks:
       - byfn         
     depends_on:
-      - zookeeper0.example.com
-      - zookeeper1.example.com
-      - zookeeper2.example.com
+      - zookeeper0.trade.com
+      - zookeeper1.trade.com
+      - zookeeper2.trade.com
 
-  kafka1.example.com:
-    container_name: kafka1.example.com
+  kafka1.trade.com:
+    container_name: kafka1.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka1.example.com
+      service: kafka1.trade.com
     networks:
       - byfn         
     depends_on:
-      - zookeeper0.example.com
-      - zookeeper1.example.com
-      - zookeeper2.example.com
+      - zookeeper0.trade.com
+      - zookeeper1.trade.com
+      - zookeeper2.trade.com
 
-  kafka2.example.com:
-    container_name: kafka2.example.com
+  kafka2.trade.com:
+    container_name: kafka2.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka2.example.com
+      service: kafka2.trade.com
     networks:
       - byfn         
     depends_on:
-      - zookeeper0.example.com
-      - zookeeper1.example.com
-      - zookeeper2.example.com
+      - zookeeper0.trade.com
+      - zookeeper1.trade.com
+      - zookeeper2.trade.com
 
-  kafka3.example.com:
-    container_name: kafka3.example.com
+  kafka3.trade.com:
+    container_name: kafka3.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka3.example.com
+      service: kafka3.trade.com
     networks:
       - byfn         
     depends_on:
-      - zookeeper0.example.com
-      - zookeeper1.example.com
-      - zookeeper2.example.com
+      - zookeeper0.trade.com
+      - zookeeper1.trade.com
+      - zookeeper2.trade.com
 
   cli:
     container_name: cli
@@ -192,13 +192,13 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_ADDRESS=peer0.org1.trade.com:7051
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.trade.com/peers/peer0.org1.trade.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.trade.com/peers/peer0.org1.trade.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.trade.com/peers/peer0.org1.trade.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.trade.com/users/Admin@org1.trade.com/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     #command: /bin/bash -c 'sleep 1000'
     volumes:
@@ -210,9 +210,9 @@ services:
     networks:
       - byfn
     depends_on:
-      - orderer0.example.com
-      - orderer1.example.com
-      - peer0.org2.example.com
-      - peer1.org2.example.com
-      - peer0.org1.example.com
-      - peer1.org1.example.com
+      - orderer0.trade.com
+      - orderer1.trade.com
+      - peer0.org2.trade.com
+      - peer1.org2.trade.com
+      - peer0.org1.trade.com
+      - peer1.org1.trade.com

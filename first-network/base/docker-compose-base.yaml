@@ -7,114 +7,114 @@ version: '2'
 
 services:
 
-  orderer0.example.com:
-    container_name: orderer0.example.com
+  orderer0.trade.com:
+    container_name: orderer0.trade.com
     extends:
       file: orderer-base.yaml
       service: orderer-base
     volumes:
       - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/orderer/msp
-      - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer0.trade.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer0.trade.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
 
-  orderer1.example.com:
-    container_name: orderer1.example.com
+  orderer1.trade.com:
+    container_name: orderer1.trade.com
     extends:
       file: orderer-base.yaml
       service: orderer-base
     volumes:
       - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp:/var/hyperledger/orderer/msp
-      - ../crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/:/var/hyperledger/orderer/tls
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer1.trade.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer1.trade.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 8050:8050
 
-  peer0.org1.example.com:
-    container_name: peer0.org1.example.com
+  peer0.org1.trade.com:
+    container_name: peer0.org1.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+      - CORE_PEER_ID=peer0.org1.trade.com
+      - CORE_PEER_ADDRESS=peer0.org1.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.trade.com:7051
       - CORE_PEER_LOCALMSPID=Org1MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.org1.example.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/org1.trade.com/peers/peer0.org1.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org1.trade.com/peers/peer0.org1.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.org1.trade.com:/var/hyperledger/production
     ports:
       - 7051:7051
       - 7053:7053
 
-  peer1.org1.example.com:
-    container_name: peer1.org1.example.com
+  peer1.org1.trade.com:
+    container_name: peer1.org1.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.org1.example.com
-      - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+      - CORE_PEER_ID=peer1.org1.trade.com
+      - CORE_PEER_ADDRESS=peer1.org1.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.trade.com:7051
       - CORE_PEER_LOCALMSPID=Org1MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.org1.example.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/org1.trade.com/peers/peer1.org1.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org1.trade.com/peers/peer1.org1.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.org1.trade.com:/var/hyperledger/production
 
     ports:
       - 7056:7051
       - 7058:7053
 
-  peer0.org2.example.com:
-    container_name: peer0.org2.example.com
+  peer0.org2.trade.com:
+    container_name: peer0.org2.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.org2.example.com
-      - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:7051
+      - CORE_PEER_ID=peer0.org2.trade.com
+      - CORE_PEER_ADDRESS=peer0.org2.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.trade.com:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.org2.example.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer0.org2.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer0.org2.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.org2.trade.com:/var/hyperledger/production
     ports:
       - 8051:7051
       - 8053:7053
 
-  peer1.org2.example.com:
-    container_name: peer1.org2.example.com
+  peer1.org2.trade.com:
+    container_name: peer1.org2.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.org2.example.com
-      - CORE_PEER_ADDRESS=peer1.org2.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+      - CORE_PEER_ID=peer1.org2.trade.com
+      - CORE_PEER_ADDRESS=peer1.org2.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.trade.com:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.org2.example.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer1.org2.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer1.org2.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.org2.trade.com:/var/hyperledger/production
     ports:
       - 8056:7051
       - 8058:7053
 
 
-  zookeeper0.example.com:
-    container_name: zookeeper0.example.com
+  zookeeper0.trade.com:
+    container_name: zookeeper0.trade.com
     extends:
       file: kafka-base.yaml
       service: zookeeper
@@ -125,8 +125,8 @@ services:
       - 2888:2888
       - 3888:3888
 
-  zookeeper1.example.com:
-    container_name: zookeeper1.example.com
+  zookeeper1.trade.com:
+    container_name: zookeeper1.trade.com
     extends:
       file: kafka-base.yaml
       service: zookeeper
@@ -137,8 +137,8 @@ services:
       - 12888:2888
       - 13888:3888
 
-  zookeeper2.example.com:
-    container_name: zookeeper2.example.com
+  zookeeper2.trade.com:
+    container_name: zookeeper2.trade.com
     extends:
       file: kafka-base.yaml
       service: zookeeper
@@ -149,8 +149,8 @@ services:
       - 22888:2888
       - 23888:3888
 
-  kafka0.example.com:
-    container_name: kafka0.example.com
+  kafka0.trade.com:
+    container_name: kafka0.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -160,8 +160,8 @@ services:
       - 9092:9092
       - 9093:9093
 
-  kafka1.example.com:
-    container_name: kafka1.example.com
+  kafka1.trade.com:
+    container_name: kafka1.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -171,8 +171,8 @@ services:
       - 10092:9092
       - 10093:9093
 
-  kafka2.example.com:
-    container_name: kafka2.example.com
+  kafka2.trade.com:
+    container_name: kafka2.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -182,8 +182,8 @@ services:
       - 11092:9092
       - 11093:9093
 
-  kafka3.example.com:
-    container_name: kafka3.example.com
+  kafka3.trade.com:
+    container_name: kafka3.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
