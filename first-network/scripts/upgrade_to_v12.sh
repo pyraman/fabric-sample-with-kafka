@@ -59,7 +59,7 @@ addCapabilityToChannel() {
     # Modifying the application group requires a majority of application admins to sign.
     # Sign with PeerExporterOrg.Admin
     signConfigtxAsPeerOrg 1 config_update_in_envelope.pb
-    # Prepare to sign the update as the PeerOrg2.Admin
+    # Prepare to sign the update as the PeerImporterOrg.Admin
     setGlobals 0 2
   fi
 
@@ -101,14 +101,14 @@ sleep $DELAY
 echo "Querying chaincode on exporterorg/peer0..."
 chaincodeQuery 0 1 80
 
-##Invoke on chaincode on Peer0/Org2
-echo "Sending invoke transaction on org2/peer0..."
+##Invoke on chaincode on Peer0/importerorg
+echo "Sending invoke transaction on importerorg/peer0..."
 chaincodeInvoke 0 2
 
 sleep $DELAY
 
-#Query on chaincode on Peer0/Org2
-echo "Querying chaincode on org2/peer0..."
+#Query on chaincode on Peer0/importerorg
+echo "Querying chaincode on importerorg/peer0..."
 chaincodeQuery 0 2 70
 
 echo

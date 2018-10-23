@@ -204,7 +204,7 @@ function upgradeNetwork() {
   docker cp -a orderer.trade.com:/var/hyperledger/production/orderer $LEDGERS_BACKUP/orderer.trade.com
   docker-compose $COMPOSE_FILES up -d --no-deps orderer.trade.com
 
-  for PEER in peer0.exporterorg.trade.com peer1.exporterorg.trade.com peer0.org2.trade.com peer1.org2.trade.com; do
+  for PEER in peer0.exporterorg.trade.com peer1.exporterorg.trade.com peer0.importerorg.trade.com peer1.importerorg.trade.com; do
     echo "Upgrading peer $PEER"
 
     # Stop the peer and backup its ledger
@@ -234,7 +234,7 @@ function upgradeNetwork() {
 
 # Tear down running network
 function networkDown() {
-  # stop org3 containers also in addition to exporterorg and org2, in case we were running sample to add org3
+  # stop org3 containers also in addition to exporterorg and importerorg, in case we were running sample to add org3
   docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
 
   # Don't remove the generated artifacts -- note, the ledgers are always removed
@@ -276,7 +276,7 @@ function replacePrivateKey() {
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
-  cd crypto-config/peerOrganizations/org2.trade.com/ca/
+  cd crypto-config/peerOrganizations/importerorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
@@ -340,7 +340,7 @@ function generateCerts() {
 #
 # Configtxgen consumes a file - ``configtx.yaml`` - that contains the definitions
 # for the sample network. There are three members - one Orderer Org (``OrdererOrg``)
-# and two Peer Orgs (``exporterorg`` & ``Org2``) each managing and maintaining two peer nodes.
+# and two Peer Orgs (``exporterorg`` & ``importerorg``) each managing and maintaining two peer nodes.
 # This file also specifies a consortium - ``SampleConsortium`` - consisting of our
 # two Peer Orgs.  Pay specific attention to the "Profiles" section at the top of
 # this file.  You will notice that we have two unique headers. One for the orderer genesis
@@ -348,7 +348,7 @@ function generateCerts() {
 # These headers are important, as we will pass them in as arguments when we create
 # our artifacts.  This file also contains two additional specifications that are worth
 # noting.  Firstly, we specify the anchor peers for each Peer Org
-# (``peer0.exporterorg.trade.com`` & ``peer0.org2.trade.com``).  Secondly, we point to
+# (``peer0.exporterorg.trade.com`` & ``peer0.importerorg.trade.com``).  Secondly, we point to
 # the location of the MSP directory for each member, in turn allowing us to store the
 # root certificates for each Org in the orderer genesis block.  This is a critical
 # concept. Now any network entity communicating with the ordering service can have
@@ -415,15 +415,15 @@ function generateChannelArtifacts() {
 
   echo
   echo "#################################################################"
-  echo "#######    Generating anchor peer update for Org2MSP   ##########"
+  echo "#######    Generating anchor peer update for ImporterOrgMSP   ##########"
   echo "#################################################################"
   set -x
   configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+    ./channel-artifacts/ImporterOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ImporterOrgMSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for Org2MSP..."
+    echo "Failed to generate anchor peer update for ImporterOrgMSP..."
     exit 1
   fi
   echo
@@ -438,7 +438,7 @@ CLI_TIMEOUT=10
 # default for delay between commands
 CLI_DELAY=3
 # channel name defaults to "mychannel"
-CHANNEL_NAME="mychannel"
+CHANNEL_NAME="tradechannel"
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE=docker-compose-kafka.yaml
 #

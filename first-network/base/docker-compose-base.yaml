@@ -72,42 +72,42 @@ services:
       - 7056:7051
       - 7058:7053
 
-  peer0.org2.trade.com:
-    container_name: peer0.org2.trade.com
+  peer0.importerorg.trade.com:
+    container_name: peer0.importerorg.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.org2.trade.com
-      - CORE_PEER_ADDRESS=peer0.org2.trade.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.trade.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.trade.com:7051
-      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_ID=peer0.importerorg.trade.com
+      - CORE_PEER_ADDRESS=peer0.importerorg.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.importerorg.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.importerorg.trade.com:7051
+      - CORE_PEER_LOCALMSPID=ImporterOrgMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer0.org2.trade.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer0.org2.trade.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.org2.trade.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.importerorg.trade.com:/var/hyperledger/production
     ports:
       - 8051:7051
       - 8053:7053
 
-  peer1.org2.trade.com:
-    container_name: peer1.org2.trade.com
+  peer1.importerorg.trade.com:
+    container_name: peer1.importerorg.trade.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.org2.trade.com
-      - CORE_PEER_ADDRESS=peer1.org2.trade.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.trade.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.trade.com:7051
-      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_ID=peer1.importerorg.trade.com
+      - CORE_PEER_ADDRESS=peer1.importerorg.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.importerorg.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.importerorg.trade.com:7051
+      - CORE_PEER_LOCALMSPID=ImporterOrgMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer1.org2.trade.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/org2.trade.com/peers/peer1.org2.trade.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.org2.trade.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/importerorg.trade.com/peers/peer1.importerorg.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/importerorg.trade.com/peers/peer1.importerorg.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.importerorg.trade.com:/var/hyperledger/production
     ports:
       - 8056:7051
       - 8058:7053

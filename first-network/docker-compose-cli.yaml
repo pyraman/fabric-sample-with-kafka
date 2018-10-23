@@ -9,8 +9,8 @@ volumes:
   orderer.trade.com:
   peer0.exporterorg.trade.com:
   peer1.exporterorg.trade.com:
-  peer0.org2.trade.com:
-  peer1.org2.trade.com:
+  peer0.importerorg.trade.com:
+  peer1.importerorg.trade.com:
 
 networks:
   byfn:
@@ -41,19 +41,19 @@ services:
     networks:
       - byfn
 
-  peer0.org2.trade.com:
-    container_name: peer0.org2.trade.com
+  peer0.importerorg.trade.com:
+    container_name: peer0.importerorg.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org2.trade.com
+      service: peer0.importerorg.trade.com
     networks:
       - byfn
 
-  peer1.org2.trade.com:
-    container_name: peer1.org2.trade.com
+  peer1.importerorg.trade.com:
+    container_name: peer1.importerorg.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org2.trade.com
+      service: peer1.importerorg.trade.com
     networks:
       - byfn
 
@@ -87,7 +87,7 @@ services:
       - orderer.trade.com
       - peer0.exporterorg.trade.com
       - peer1.exporterorg.trade.com
-      - peer0.org2.trade.com
-      - peer1.org2.trade.com
+      - peer0.importerorg.trade.com
+      - peer1.importerorg.trade.com
     networks:
       - byfn

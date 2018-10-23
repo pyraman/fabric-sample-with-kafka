@@ -7,7 +7,7 @@
 
 # This script is designed to be run in the cli container as the third
 # step of the EYFN tutorial. It installs the chaincode as version 2.0
-# on peer0.exporter and peer0.org2, and uprage the chaincode on the
+# on peer0.exporter and peer0.importerorg, and uprage the chaincode on the
 # channel to version 2.0, thus completing the addition of org3 to the
 # network previously setup in the BYFN tutorial.
 #
@@ -39,7 +39,7 @@ fi
 
 echo "===================== Installing chaincode 2.0 on peer0.exporter ===================== "
 installChaincode 0 1 2.0
-echo "===================== Installing chaincode 2.0 on peer0.org2 ===================== "
+echo "===================== Installing chaincode 2.0 on peer0.importerorg ===================== "
 installChaincode 0 2 2.0
 
 echo "===================== Upgrading chaincode on peer0.exporter ===================== "

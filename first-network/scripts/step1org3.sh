@@ -60,7 +60,7 @@ echo
 signConfigtxAsPeerOrg 1 org3_update_in_envelope.pb
 
 echo
-echo "========= Submitting transaction from a different peer (peer0.org2) which also signs it ========= "
+echo "========= Submitting transaction from a different peer (peer0.importerorg) which also signs it ========= "
 echo
 setGlobals 0 2
 set -x

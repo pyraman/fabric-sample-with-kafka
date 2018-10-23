@@ -7,13 +7,13 @@ version: '2'
 
 volumes:
   ca.exporterorg.trade.com:
-  ca.org2.trade.com:
+  ca.importerorg.trade.com:
   orderer0.trade.com:
   orderer1.trade.com:
   peer0.exporterorg.trade.com:
   peer1.exporterorg.trade.com:
-  peer0.org2.trade.com:
-  peer1.org2.trade.com:
+  peer0.importerorg.trade.com:
+  peer1.importerorg.trade.com:
 
 networks:
   byfn:
@@ -25,10 +25,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-exporterorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e76c8f0e5ca99cb5927f85bda47d04ee0066748e7c7e1596d6929e42a9e7259d_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/77fadb81f0939a3943659ae2c9c4bcfc5c4a296d5ab044b73ce3b939c1a33e7c_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e76c8f0e5ca99cb5927f85bda47d04ee0066748e7c7e1596d6929e42a9e7259d_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/77fadb81f0939a3943659ae2c9c4bcfc5c4a296d5ab044b73ce3b939c1a33e7c_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -36,22 +36,22 @@ services:
       - ./crypto-config/peerOrganizations/exporterorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-exporterorg
 
-  ca.org2.trade.com:
+  ca.importerorg.trade.com:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_NAME=ca-importerorg
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org2.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca-org2
+      - ./crypto-config/peerOrganizations/importerorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca-importerorg
 
   orderer0.trade.com:
     extends:
@@ -95,19 +95,19 @@ services:
     networks:
       - byfn      
       
-  peer0.org2.trade.com:
-    container_name: peer0.org2.trade.com
+  peer0.importerorg.trade.com:
+    container_name: peer0.importerorg.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org2.trade.com
+      service: peer0.importerorg.trade.com
     networks:
       - byfn      
 
-  peer1.org2.trade.com:
-    container_name: peer1.org2.trade.com
+  peer1.importerorg.trade.com:
+    container_name: peer1.importerorg.trade.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org2.trade.com
+      service: peer1.importerorg.trade.com
     networks:
       - byfn
 
@@ -212,7 +212,7 @@ services:
     depends_on:
       - orderer0.trade.com
       - orderer1.trade.com
-      - peer0.org2.trade.com
-      - peer1.org2.trade.com
+      - peer0.importerorg.trade.com
+      - peer1.importerorg.trade.com
       - peer0.exporterorg.trade.com
       - peer1.exporterorg.trade.com

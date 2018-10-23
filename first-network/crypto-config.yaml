@@ -73,10 +73,10 @@ PeerOrgs:
     Users:
       Count: 1
   # ---------------------------------------------------------------------------
-  # Org2: See "ExporterOrg" for full specification
+  # ImporterOrg: See "ExporterOrg" for full specification
   # ---------------------------------------------------------------------------
-  - Name: Org2
-    Domain: org2.trade.com
+  - Name: ImporterOrgMSP
+    Domain: importerorg.trade.com
     EnableNodeOUs: true
     Template:
       Count: 2

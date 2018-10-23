@@ -75,33 +75,33 @@ joinChannel
 ## Set the anchor peers for each org in the channel
 echo "Updating anchor peers for exporterorg..."
 updateAnchorPeers 0 1
-echo "Updating anchor peers for org2..."
+echo "Updating anchor peers for importerorg..."
 updateAnchorPeers 0 2
 
-## Install chaincode on peer0.exporter and peer0.org2
+## Install chaincode on peer0.exporter and peer0.importerorg
 echo "Installing chaincode on peer0.exporterorg..."
 installChaincode 0 1
-echo "Install chaincode on peer0.org2..."
+echo "Install chaincode on peer0.importerorg..."
 installChaincode 0 2
 
-# Instantiate chaincode on peer0.org2
-echo "Instantiating chaincode on peer0.org2..."
+# Instantiate chaincode on peer0.importerorg
+echo "Instantiating chaincode on peer0.importerorg..."
 instantiateChaincode 0 2
 
 # Query chaincode on peer0.exporter
 echo "Querying chaincode on peer0.exporterorg..."
 chaincodeQuery 0 1 100
 
-# Invoke chaincode on peer0.exporter and peer0.org2
-echo "Sending invoke transaction on peer0.exporter peer0.org2..."
+# Invoke chaincode on peer0.exporter and peer0.importerorg
+echo "Sending invoke transaction on peer0.exporter peer0.importerorg..."
 chaincodeInvoke 0 1 0 2
 
-## Install chaincode on peer1.org2
-echo "Installing chaincode on peer1.org2..."
+## Install chaincode on peer1.importerorg
+echo "Installing chaincode on peer1.importerorg..."
 installChaincode 1 2
 
-# Query on chaincode on peer1.org2, check if the result is 90
-echo "Querying chaincode on peer1.org2..."
+# Query on chaincode on peer1.importerorg, check if the result is 90
+echo "Querying chaincode on peer1.importerorg..."
 chaincodeQuery 1 2 90
 
 echo
