@@ -23,10 +23,10 @@ OrdererOrgs:
 # ---------------------------------------------------------------------------
 PeerOrgs:
   # ---------------------------------------------------------------------------
-  # Org1
+  # ExporterOrg
   # ---------------------------------------------------------------------------
-  - Name: Org1
-    Domain: org1.trade.com
+  - Name: ExporterOrg
+    Domain: exporterorg.trade.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -45,7 +45,7 @@ PeerOrgs:
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
     # Specs:
-    #   - Hostname: foo # implicitly "foo.org1.trade.com"
+    #   - Hostname: foo # implicitly "foo.exporterorg.trade.com"
     #     CommonName: foo27.org5.trade.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz
@@ -73,7 +73,7 @@ PeerOrgs:
     Users:
       Count: 1
   # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
+  # Org2: See "ExporterOrg" for full specification
   # ---------------------------------------------------------------------------
   - Name: Org2
     Domain: org2.trade.com
