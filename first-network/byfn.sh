@@ -275,11 +275,11 @@ function replacePrivateKey() {
   cd crypto-config/peerOrganizations/org1.example.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
+  sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
   cd crypto-config/peerOrganizations/org2.example.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
+  sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
   # If MacOSX, remove the temporary backup of the docker-compose file
   if [ "$ARCH" == "Darwin" ]; then
     rm docker-compose-e2e.yamlt
@@ -463,6 +463,8 @@ elif [ "$MODE" == "down" ]; then
   EXPMODE="Stopping"
 elif [ "$MODE" == "restart" ]; then
   EXPMODE="Restarting"
+elif [ "$MODE" == "replacePrivateKey" ]; then
+  EXPMODE="replacePrivateKey"
 elif [ "$MODE" == "generate" ]; then
   EXPMODE="Generating certs and genesis block"
 elif [ "$MODE" == "upgrade" ]; then
@@ -522,10 +524,10 @@ if [ "${MODE}" == "up" ]; then
   networkUp
 elif [ "${MODE}" == "down" ]; then ## Clear the network
   networkDown
-elif [ "${MODE}" == "generate" ]; then ## Generate Artifacts
+elif [ "${MODE}" == "generate" ]; then ## Clear the network
   generateCerts
+elif [ "${MODE}" == "replacePrivateKey" ]; then ## Clear the network
   replacePrivateKey
-  generateChannelArtifacts
 elif [ "${MODE}" == "restart" ]; then ## Restart the network
   networkDown
   networkUp
