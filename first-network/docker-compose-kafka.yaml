@@ -16,6 +16,7 @@ volumes:
   peer0.importerorg.trade.com:
   peer1.importerorg.trade.com:
   peer0.exportingentityorg.trade.com:
+  peer0.carrierorg.trade.com:
 
 networks:
   byfn:
@@ -71,6 +72,23 @@ services:
     volumes:
       - ./crypto-config/peerOrganizations/exportingentityorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-exportingentityorg
+
+  ca.carrierorg.trade.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-carrierorg
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/carrierorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca-carrierorg
 
   orderer0.trade.com:
     extends:
@@ -135,6 +153,14 @@ services:
     extends:
       file:  base/docker-compose-base.yaml
       service: peer0.exportingentityorg.trade.com
+    networks:
+      - byfn
+  
+  peer0.carrierorg.trade.com:
+    container_name: peer0.carrierorg.trade.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.carrierorg.trade.com
     networks:
       - byfn  
 

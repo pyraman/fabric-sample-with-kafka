@@ -10,6 +10,7 @@ ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrga
 PEER0_EXPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterorg.trade.com/peers/peer0.exporterorg.trade.com/tls/ca.crt
 PEER0_IMPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls/ca.crt
 PEER0_EXPORTINGENTITYORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exportingentityorg.trade.com/peers/peer0.exportingentityorg.trade.com/tls/ca.crt
+PEER0_CARRIERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -58,6 +59,16 @@ setGlobals() {
       CORE_PEER_ADDRESS=peer0.exportingentityorg.trade.com:7051
     else
       CORE_PEER_ADDRESS=peer1.exportingentityorg.trade.com:7051
+    fi
+
+  elif [ $ORG -eq 4 ]; then
+    CORE_PEER_LOCALMSPID="CarrierOrgMSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_CARRIERORG_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp
+    if [ $PEER -eq 0 ]; then
+      CORE_PEER_ADDRESS=peer0.carrierorg.trade.com:7051
+    else
+      CORE_PEER_ADDRESS=peer1.carrierorg.trade.com:7051
     fi
   else
     echo "================== ERROR !!! ORG Unknown =================="

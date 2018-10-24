@@ -276,6 +276,11 @@ function replacePrivateKey() {
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA3_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+
+  cd crypto-config/peerOrganizations/carrierorg.trade.com/ca/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/CA4_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
 }
 
 # We will use the cryptogen tool to generate the cryptographic material (x509 certs)
@@ -432,6 +437,21 @@ function generateChannelArtifacts() {
     echo "Failed to generate anchor peer update for ImporterOrgMSP..."
     exit 1
   fi
+
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for CarrierOrgMSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/CarrierOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg CarrierOrgMSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for ImporterOrgMSP..."
+    exit 1
+  fi
+
   echo
 }
 

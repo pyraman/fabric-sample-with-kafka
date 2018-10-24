@@ -90,3 +90,11 @@ PeerOrgs:
       Count: 1
     Users:
       Count: 1
+
+  - Name: CarrierOrg
+    Domain: carrierorg.trade.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

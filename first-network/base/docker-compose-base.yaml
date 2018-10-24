@@ -132,6 +132,26 @@ services:
       - 9051:7051
       - 9053:7053
 
+  peer0.carrierorg.trade.com:
+    container_name: peer0.carrierorg.trade.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.carrierorg.trade.com
+      - CORE_PEER_ADDRESS=peer0.carrierorg.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.carrierorg.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.carrierorg.trade.com:7051
+      - CORE_PEER_LOCALMSPID=CarrierOrgMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.carrierorg.trade.com:/var/hyperledger/production
+    ports:
+      - 10051:7051
+      - 10053:7053
+
 
   zookeeper0.trade.com:
     container_name: zookeeper0.trade.com
