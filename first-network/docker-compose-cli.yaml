@@ -56,6 +56,14 @@ services:
       service: peer1.importerorg.trade.com
     networks:
       - byfn
+  
+  peer0.exportingentityorg.trade.com:
+    container_name: peer0.exportingentityorg.trade.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.exportingentityorg.trade.com
+    networks:
+      - byfn
 
   cli:
     container_name: cli

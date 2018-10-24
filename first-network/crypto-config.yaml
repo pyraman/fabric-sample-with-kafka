@@ -75,10 +75,18 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # ImporterOrg: See "ExporterOrg" for full specification
   # ---------------------------------------------------------------------------
-  - Name: ImporterOrgMSP
+  - Name: ImporterOrg
     Domain: importerorg.trade.com
     EnableNodeOUs: true
     Template:
       Count: 2
+    Users:
+      Count: 1
+
+  - Name: ExportingEntityOrg
+    Domain: exportingentityorg.trade.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
     Users:
       Count: 1

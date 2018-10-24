@@ -9,7 +9,7 @@
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trade.com/orderers/orderer0.trade.com/msp/tlscacerts/tlsca.trade.com-cert.pem
 PEER0_EXPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterorg.trade.com/peers/peer0.exporterorg.trade.com/tls/ca.crt
 PEER0_IMPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls/ca.crt
-PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.trade.com/peers/peer0.org3.trade.com/tls/ca.crt
+PEER0_EXPORTINGENTITYORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exportingentityorg.trade.com/peers/peer0.exportingentityorg.trade.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -51,13 +51,13 @@ setGlobals() {
     fi
 
   elif [ $ORG -eq 3 ]; then
-    CORE_PEER_LOCALMSPID="Org3MSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.trade.com/users/Admin@org3.trade.com/msp
+    CORE_PEER_LOCALMSPID="ExportingEntityOrgMSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_EXPORTINGENTITYORG_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp
     if [ $PEER -eq 0 ]; then
-      CORE_PEER_ADDRESS=peer0.org3.trade.com:7051
+      CORE_PEER_ADDRESS=peer0.exportingentityorg.trade.com:7051
     else
-      CORE_PEER_ADDRESS=peer1.org3.trade.com:7051
+      CORE_PEER_ADDRESS=peer1.exportingentityorg.trade.com:7051
     fi
   else
     echo "================== ERROR !!! ORG Unknown =================="
@@ -71,6 +71,7 @@ setGlobals() {
 updateAnchorPeers() {
   PEER=$1
   ORG=$2
+  echo "[updateAnchorPeers] peer: $PEER org: $ORG BEGIN"
   setGlobals $PEER $ORG
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
@@ -85,6 +86,7 @@ updateAnchorPeers() {
     set +x
   fi
   cat log.txt
+  echo "[updateAnchorPeers] peer: $PEER org: $ORG END"
   verifyResult $res "Anchor peer update failed"
   echo "===================== Anchor peers updated for org '$CORE_PEER_LOCALMSPID' on channel '$CHANNEL_NAME' ===================== "
   sleep $DELAY
