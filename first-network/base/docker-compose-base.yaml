@@ -152,6 +152,26 @@ services:
       - 10051:7051
       - 10053:7053
 
+  peer0.regulatororg.trade.com:
+    container_name: peer0.regulatororg.trade.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.regulatororg.trade.com
+      - CORE_PEER_ADDRESS=peer0.regulatororg.trade.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.regulatororg.trade.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.regulatororg.trade.com:7051
+      - CORE_PEER_LOCALMSPID=RegulatorOrgMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/regulatororg.trade.com/peers/peer0.regulatororg.trade.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/regulatororg.trade.com/peers/peer0.regulatororg.trade.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.regulatororg.trade.com:/var/hyperledger/production
+    ports:
+      - 11051:7051
+      - 11053:7053
+
 
   zookeeper0.trade.com:
     container_name: zookeeper0.trade.com

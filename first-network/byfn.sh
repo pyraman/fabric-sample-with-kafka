@@ -266,21 +266,26 @@ function replacePrivateKey() {
   cd crypto-config/peerOrganizations/exporterorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+  sed $OPTS "s/CA_EXPORTORORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
   cd crypto-config/peerOrganizations/importerorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+  sed $OPTS "s/CA_IMPORTERORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
 
   cd crypto-config/peerOrganizations/exportingentityorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA3_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+  sed $OPTS "s/CA_EXPORTINGENTITYORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
 
   cd crypto-config/peerOrganizations/carrierorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
-  sed $OPTS "s/CA4_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+  sed $OPTS "s/CA_CARRIERORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+
+  cd crypto-config/peerOrganizations/regulatororg.trade.com/ca/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/CA_REGULATORORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
 }
 
 # We will use the cryptogen tool to generate the cryptographic material (x509 certs)
@@ -434,7 +439,7 @@ function generateChannelArtifacts() {
   res=$?
   set +x
   if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for ImporterOrgMSP..."
+    echo "Failed to generate anchor peer update for ExportingEntityOrgMSP..."
     exit 1
   fi
 
@@ -448,7 +453,21 @@ function generateChannelArtifacts() {
   res=$?
   set +x
   if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for ImporterOrgMSP..."
+    echo "Failed to generate anchor peer update for CarrierOrgMSP..."
+    exit 1
+  fi
+
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for RegulatorOrgMSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/RegulatorOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg RegulatorOrgMSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for RegulatorOrgMSP..."
     exit 1
   fi
 

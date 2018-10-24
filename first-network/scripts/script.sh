@@ -65,10 +65,14 @@ joinChannel () {
 
 	joinChannelWithRetry 0 3
 	echo "===================== peer0.org3 joined channel '$CHANNEL_NAME' ===================== "
+	sleep $DELAY
 
 	joinChannelWithRetry 0 4
 	echo "===================== peer0.org4 joined channel '$CHANNEL_NAME' ===================== "
-	
+	sleep $DELAY
+
+	joinChannelWithRetry 0 5
+	echo "===================== peer0.org5 joined channel '$CHANNEL_NAME' ===================== "
 	sleep $DELAY
 }
 
@@ -86,9 +90,14 @@ updateAnchorPeers 0 1
 echo "Updating anchor peers for importerorg..."
 updateAnchorPeers 0 2
 
+echo "Updating anchor peers for exportingentityorg..."
 updateAnchorPeers 0 3
 
+echo "Updating anchor peers for carrierorg..."
 updateAnchorPeers 0 4
+
+echo "Updating anchor peers for regulatororg..."
+updateAnchorPeers 0 5
 
 ## Install chaincode on peer0.exporter and peer0.importerorg
 echo "Installing chaincode on peer0.exporterorg..."
@@ -96,9 +105,14 @@ installChaincode 0 1
 echo "Install chaincode on peer0.importerorg..."
 installChaincode 0 2
 
+echo "Install chaincode on peer0.exportingentityorg..."
 installChaincode 0 3
 
+echo "Install chaincode on peer0.carrierorg..."
 installChaincode 0 4
+
+echo "Install chaincode on peer0.regulatororg..."
+installChaincode 0 5
 
 # Instantiate chaincode on peer0.importerorg
 echo "Instantiating chaincode on peer0.importerorg..."
@@ -115,6 +129,10 @@ chaincodeQuery 0 3 100
 # Query chaincode on peer0.carrierorg
 echo "Querying chaincode on peer0.carrierorg..."
 chaincodeQuery 0 4 100
+
+# Query chaincode on peer0.regulatororg
+echo "Querying chaincode on peer0.regulatororg..."
+chaincodeQuery 0 5 100
 
 # Invoke chaincode on peer0.exporter and peer0.importerorg
 echo "Sending invoke transaction on peer0.exporter to peer0.importerorg..."

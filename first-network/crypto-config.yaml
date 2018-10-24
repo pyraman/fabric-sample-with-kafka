@@ -98,3 +98,11 @@ PeerOrgs:
       Count: 1
     Users:
       Count: 1
+
+  - Name: RegulatorOrg
+    Domain: regulatororg.trade.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

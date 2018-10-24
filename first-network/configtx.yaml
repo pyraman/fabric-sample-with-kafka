@@ -95,6 +95,23 @@ Organizations:
             - Host: peer0.carrierorg.trade.com
               Port: 7051
 
+    - &RegulatorOrg
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: RegulatorOrgMSP
+
+        # ID to load the MSP definition as
+        ID: RegulatorOrgMSP
+
+        MSPDir: crypto-config/peerOrganizations/regulatororg.trade.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.regulatororg.trade.com
+              Port: 7051
+
 ################################################################################
 #
 #   SECTION: Capabilities
@@ -233,6 +250,7 @@ Profiles:
                     - *ImporterOrg
                     - *ExportingEntityOrg
                     - *CarrierOrg
+                    - *RegulatorOrg
     TwoOrgsChannel:
         Consortium: SampleConsortium
         Application:
@@ -242,5 +260,6 @@ Profiles:
                 - *ImporterOrg
                 - *ExportingEntityOrg
                 - *CarrierOrg
+                - *RegulatorOrg
             Capabilities:
                 <<: *ApplicationCapabilities

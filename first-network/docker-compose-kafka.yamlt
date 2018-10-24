@@ -17,6 +17,7 @@ volumes:
   peer1.importerorg.trade.com:
   peer0.exportingentityorg.trade.com:
   peer0.carrierorg.trade.com:
+  peer0.regulatororg.trade.com:
 
 networks:
   byfn:
@@ -28,10 +29,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-exporterorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9c580824e6a6c9b2d01a5cbb141945dedf909feed35d644ae042cdb6900378b2_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/3404f8ace72de413bfc2f65725cccf4820cfdb5eb4a694168410bb4a0fef77e6_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9c580824e6a6c9b2d01a5cbb141945dedf909feed35d644ae042cdb6900378b2_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/3404f8ace72de413bfc2f65725cccf4820cfdb5eb4a694168410bb4a0fef77e6_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -45,10 +46,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-importerorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7912dd12b9eff24160e786e11e0560b162d9426e2975e1741e30f5f0b6aac79_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ba02d440ff54b146d9a66bb7568b21185e680b06d56427ae5b0996df1d3d7f60_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7912dd12b9eff24160e786e11e0560b162d9426e2975e1741e30f5f0b6aac79_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ba02d440ff54b146d9a66bb7568b21185e680b06d56427ae5b0996df1d3d7f60_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -62,10 +63,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-exportingentityorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exportingentityorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/664580a4c3aff113c5bea76d0a91b606d10b03562a37ec0614fa51e087a4dc70_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/06ea89cb1ff894d2131addbc364eb732e9f77a3ee644a7cf31300961f3ec7aa7_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exportingentityorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/664580a4c3aff113c5bea76d0a91b606d10b03562a37ec0614fa51e087a4dc70_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/06ea89cb1ff894d2131addbc364eb732e9f77a3ee644a7cf31300961f3ec7aa7_sk
     ports:
       - "9054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -79,16 +80,33 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-carrierorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/64d7441bb58e1771bd361ae07e970ddeacd580c601d4f279933db049b24ae902_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/64d7441bb58e1771bd361ae07e970ddeacd580c601d4f279933db049b24ae902_sk
     ports:
       - "10054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/carrierorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-carrierorg
+
+  ca.regulatororg.trade.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-regulatororg
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulatororg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_REGULATORORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulatororg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_REGULATORORG_PRIVATE_KEY
+    ports:
+      - "11054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/regulatororg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca-regulatororg
 
   orderer0.trade.com:
     extends:
@@ -161,6 +179,14 @@ services:
     extends:
       file:  base/docker-compose-base.yaml
       service: peer0.carrierorg.trade.com
+    networks:
+      - byfn  
+
+  peer0.regulatororg.trade.com:
+    container_name: peer0.regulatororg.trade.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.regulatororg.trade.com
     networks:
       - byfn  
 
