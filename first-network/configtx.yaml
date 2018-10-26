@@ -16,13 +16,13 @@ Organizations:
 
     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
     # in production but may be used as a template for other definitions
-    - &OrdererOrg
+    - &TradeOrdererOrg
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: OrdererOrg
+        Name: TradeOrdererOrg
 
         # ID to load the MSP definition as
-        ID: OrdererMSP
+        ID: TradeOrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/trade.com/msp
@@ -190,9 +190,9 @@ Orderer: &OrdererDefaults
     OrdererType: kafka
 
     Addresses:
-          - orderer0.trade.com:7050
+          - orderer.trade.com:7050
           - orderer1.trade.com:7050
-
+          - orderer2.trade.com:7050
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
 
@@ -215,10 +215,10 @@ Orderer: &OrdererDefaults
         # Brokers: A list of Kafka brokers to which the orderer connects
         # NOTE: Use IP:port notation
         Brokers:
-              - kafka0.trade.com:9092
-              - kafka1.trade.com:9092
-              - kafka2.trade.com:9092
-              - kafka3.trade.com:9092
+              - broker0.trade.com:9092
+              - broker1.trade.com:9092
+              - broker2.trade.com:9092
+              - broker3.trade.com:9092
 
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
@@ -239,8 +239,9 @@ Profiles:
             <<: *ChannelCapabilities
         Orderer:
             <<: *OrdererDefaults
+            OrdererType: kafka
             Organizations:
-                - *OrdererOrg
+                - *TradeOrdererOrg
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:

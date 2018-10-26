@@ -7,15 +7,15 @@ version: '2'
 
 services:
 
-  orderer0.trade.com:
-    container_name: orderer0.trade.com
+  orderer.trade.com:
+    container_name: orderer.trade.com
     extends:
       file: orderer-base.yaml
       service: orderer-base
     volumes:
-      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer0.trade.com/msp:/var/hyperledger/orderer/msp
-      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer0.trade.com/tls/:/var/hyperledger/orderer/tls
+      - ../channel-artifacts/genesisblock:/var/hyperledger/orderer/orderer.genesisblock
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer.trade.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer.trade.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
 
@@ -25,11 +25,23 @@ services:
       file: orderer-base.yaml
       service: orderer-base
     volumes:
-      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../channel-artifacts/genesisblock:/var/hyperledger/orderer/orderer.genesisblock
       - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer1.trade.com/msp:/var/hyperledger/orderer/msp
       - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer1.trade.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 8050:8050
+
+  orderer2.trade.com:
+    container_name: orderer2.trade.com
+    extends:
+      file: orderer-base.yaml
+      service: orderer-base
+    volumes:
+      - ../channel-artifacts/genesisblock:/var/hyperledger/orderer/orderer.genesisblock
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer2.trade.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/trade.com/orderers/orderer2.trade.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 9050:9050
 
   peer0.exporterorg.trade.com:
     container_name: peer0.exporterorg.trade.com
@@ -209,8 +221,8 @@ services:
       - 22888:2888
       - 23888:3888
 
-  kafka0.trade.com:
-    container_name: kafka0.trade.com
+  broker0.trade.com:
+    container_name: broker0.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -220,8 +232,8 @@ services:
       - 9092:9092
       - 9093:9093
 
-  kafka1.trade.com:
-    container_name: kafka1.trade.com
+  broker1.trade.com:
+    container_name: broker1.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -231,8 +243,8 @@ services:
       - 10092:9092
       - 10093:9093
 
-  kafka2.trade.com:
-    container_name: kafka2.trade.com
+  broker2.trade.com:
+    container_name: broker2.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka
@@ -242,8 +254,8 @@ services:
       - 11092:9092
       - 11093:9093
 
-  kafka3.trade.com:
-    container_name: kafka3.trade.com
+  broker3.trade.com:
+    container_name: broker3.trade.com
     extends:
       file: kafka-base.yaml
       service: kafka

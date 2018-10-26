@@ -9,8 +9,9 @@ volumes:
   ca.exporterorg.trade.com:
   ca.importerorg.trade.com:
   ca.exportingentityorg.trade.com:
-  orderer0.trade.com:
+  orderer.trade.com:
   orderer1.trade.com:
+  orderer2.trade.com:
   peer0.exporterorg.trade.com:
   peer1.exporterorg.trade.com:
   peer0.importerorg.trade.com:
@@ -29,10 +30,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-exporterorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_EXPORTORORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/87396d03585ece98f3ffdae47df96c2a49715a04ce6b39154b64bac6e3ef5cf8_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_EXPORTORORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/87396d03585ece98f3ffdae47df96c2a49715a04ce6b39154b64bac6e3ef5cf8_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -46,10 +47,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-importerorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_IMPORTERORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d52ee0e277547783aecbafe211f5c87f2ff15e4532939ef2012e33d012b1ee32_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_IMPORTERORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d52ee0e277547783aecbafe211f5c87f2ff15e4532939ef2012e33d012b1ee32_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -63,10 +64,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-exportingentityorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exportingentityorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_EXPORTINGENTITYORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0af2f0e3c9307db6392bfbad853ddf7b23afdbd0167f970dcb76ab0324b45d46_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exportingentityorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_EXPORTINGENTITYORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0af2f0e3c9307db6392bfbad853ddf7b23afdbd0167f970dcb76ab0324b45d46_sk
     ports:
       - "9054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -80,10 +81,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-carrierorg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_CARRIERORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/55bc14e39fd34a11fad5d2bfd74e2f952609b8753e818136be78f222212695d3_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_CARRIERORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/55bc14e39fd34a11fad5d2bfd74e2f952609b8753e818136be78f222212695d3_sk
     ports:
       - "10054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -97,10 +98,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-regulatororg
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulatororg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_REGULATORORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7988532335ff0f9a2d96cccd6555b572c2a317cf18008c28dd62a6e3dc9eeff_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulatororg.trade.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_REGULATORORG_PRIVATE_KEY
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7988532335ff0f9a2d96cccd6555b572c2a317cf18008c28dd62a6e3dc9eeff_sk
     ports:
       - "11054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -108,16 +109,16 @@ services:
       - ./crypto-config/peerOrganizations/regulatororg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-regulatororg
 
-  orderer0.trade.com:
+  orderer.trade.com:
     extends:
       file:   base/docker-compose-base.yaml
-      service: orderer0.trade.com
-    container_name: orderer0.trade.com
+      service: orderer.trade.com
+    container_name: orderer.trade.com
     depends_on:
-      - kafka0.trade.com
-      - kafka1.trade.com
-      - kafka2.trade.com
-      - kafka3.trade.com  
+      - broker0.trade.com
+      - broker1.trade.com
+      - broker2.trade.com
+      - broker3.trade.com  
     networks:
       - byfn
       
@@ -127,10 +128,23 @@ services:
       service: orderer1.trade.com
     container_name: orderer1.trade.com
     depends_on:
-      - kafka0.trade.com
-      - kafka1.trade.com
-      - kafka2.trade.com
-      - kafka3.trade.com  
+      - broker0.trade.com
+      - broker1.trade.com
+      - broker2.trade.com
+      - broker3.trade.com  
+    networks:
+      - byfn
+      
+  orderer2.trade.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer2.trade.com
+    container_name: orderer2.trade.com
+    depends_on:
+      - broker0.trade.com
+      - broker1.trade.com
+      - broker2.trade.com
+      - broker3.trade.com  
     networks:
       - byfn      
 
@@ -214,11 +228,11 @@ services:
     networks:
       - byfn      
 
-  kafka0.trade.com:
-    container_name: kafka0.trade.com
+  broker0.trade.com:
+    container_name: broker0.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka0.trade.com
+      service: broker0.trade.com
     networks:
       - byfn         
     depends_on:
@@ -226,11 +240,11 @@ services:
       - zookeeper1.trade.com
       - zookeeper2.trade.com
 
-  kafka1.trade.com:
-    container_name: kafka1.trade.com
+  broker1.trade.com:
+    container_name: broker1.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka1.trade.com
+      service: broker1.trade.com
     networks:
       - byfn         
     depends_on:
@@ -238,11 +252,11 @@ services:
       - zookeeper1.trade.com
       - zookeeper2.trade.com
 
-  kafka2.trade.com:
-    container_name: kafka2.trade.com
+  broker2.trade.com:
+    container_name: broker2.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka2.trade.com
+      service: broker2.trade.com
     networks:
       - byfn         
     depends_on:
@@ -250,11 +264,11 @@ services:
       - zookeeper1.trade.com
       - zookeeper2.trade.com
 
-  kafka3.trade.com:
-    container_name: kafka3.trade.com
+  broker3.trade.com:
+    container_name: broker3.trade.com
     extends:
       file: base/docker-compose-base.yaml
-      service: kafka3.trade.com
+      service: broker3.trade.com
     networks:
       - byfn         
     depends_on:
@@ -289,8 +303,9 @@ services:
     networks:
       - byfn
     depends_on:
-      - orderer0.trade.com
+      - orderer.trade.com
       - orderer1.trade.com
+      - orderer2.trade.com
       - peer0.importerorg.trade.com
       - peer1.importerorg.trade.com
       - peer0.exporterorg.trade.com

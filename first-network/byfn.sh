@@ -380,9 +380,9 @@ function generateChannelArtifacts() {
   echo "#########  Generating Orderer Genesis block ##############"
   echo "##########################################################"
   # Note: For some unknown reason (at least for now) the block file can't be
-  # named orderer.genesis.block or the orderer will fail to launch!
+  # named orderer.genesisblock or the orderer will fail to launch!
   set -x
-  configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+  configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesisblock
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -394,14 +394,13 @@ function generateChannelArtifacts() {
   echo "### Generating channel configuration transaction 'channel.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+  configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/$CHANNEL_NAME.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
     echo "Failed to generate channel configuration transaction..."
     exit 1
   fi
-
   echo
   echo "#################################################################"
   echo "#######    Generating anchor peer update for ExporterOrgMSP   ##########"
