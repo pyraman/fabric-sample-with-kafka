@@ -268,7 +268,7 @@ Orderer: &OrdererDefaults
 ################################################################################
 Profiles:
 
-    TwoOrgsOrdererGenesis:
+    OrgsOrdererGenesis:
         Capabilities:
             <<: *ChannelCapabilities
         Orderer:
@@ -279,20 +279,24 @@ Profiles:
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
-            SampleConsortium:
+            TradeConsortium:
                 Organizations:
                     - *ExporterOrg
+                    - *ExporterBankOrg
                     - *ImporterOrg
+                    - *ImporterBankOrg
                     - *ExportingEntityOrg
                     - *CarrierOrg
                     - *RegulatorOrg
-    TwoOrgsChannel:
-        Consortium: SampleConsortium
+    OrgsChannel:
+        Consortium: TradeConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
                 - *ExporterOrg
+                - *ExporterBankOrg
                 - *ImporterOrg
+                - *ImporterBankOrg
                 - *ExportingEntityOrg
                 - *CarrierOrg
                 - *RegulatorOrg

@@ -343,10 +343,10 @@ function generateCerts() {
 # Configtxgen consumes a file - ``configtx.yaml`` - that contains the definitions
 # for the sample network. There are three members - one Orderer Org (``OrdererOrg``)
 # and two Peer Orgs (``exporterorg`` & ``importerorg``) each managing and maintaining two peer nodes.
-# This file also specifies a consortium - ``SampleConsortium`` - consisting of our
+# This file also specifies a consortium - ``TradeConsortium`` - consisting of our
 # two Peer Orgs.  Pay specific attention to the "Profiles" section at the top of
 # this file.  You will notice that we have two unique headers. One for the orderer genesis
-# block - ``TwoOrgsOrdererGenesis`` - and one for our channel - ``TwoOrgsChannel``.
+# block - ``OrgsOrdererGenesis`` - and one for our channel - ``OrgsChannel``.
 # These headers are important, as we will pass them in as arguments when we create
 # our artifacts.  This file also contains two additional specifications that are worth
 # noting.  Firstly, we specify the anchor peers for each Peer Org
@@ -377,7 +377,7 @@ function generateAnchorPeerUpdateForOrgMSP(){
   echo "#######    Generating anchor peer update for $OrgMSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/"$OrgMSP"anchors.tx -channelID $CHANNEL_NAME -asOrg $OrgMSP
+  configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/"$OrgMSP"anchors.tx -channelID $CHANNEL_NAME -asOrg $OrgMSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -400,7 +400,7 @@ function generateChannelArtifacts() {
   # Note: For some unknown reason (at least for now) the block file can't be
   # named orderer.genesisblock or the orderer will fail to launch!
   set -x
-  configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesisblock
+  configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/genesisblock
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -412,7 +412,7 @@ function generateChannelArtifacts() {
   echo "### Generating channel configuration transaction 'channel.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/$CHANNEL_NAME.tx -channelID $CHANNEL_NAME
+  configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/$CHANNEL_NAME.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
