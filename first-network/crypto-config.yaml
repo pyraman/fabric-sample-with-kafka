@@ -73,6 +73,18 @@ PeerOrgs:
     # ---------------------------------------------------------------------------
     Users:
       Count: 1
+
+  # ---------------------------------------------------------------------------
+  # ExporterBankOrg: See "ExporterOrg" for full specification
+  # ---------------------------------------------------------------------------
+  - Name: ExporterBankOrg
+    Domain: exporterbankorg.trade.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
   # ---------------------------------------------------------------------------
   # ImporterOrg: See "ExporterOrg" for full specification
   # ---------------------------------------------------------------------------
@@ -81,6 +93,17 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+    Users:
+      Count: 1
+
+  # ---------------------------------------------------------------------------
+  # ImporterBankOrg: See "ExporterOrg" for full specification
+  # ---------------------------------------------------------------------------
+  - Name: ImporterBankOrg
+    Domain: importerbankorg.trade.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
     Users:
       Count: 1
 

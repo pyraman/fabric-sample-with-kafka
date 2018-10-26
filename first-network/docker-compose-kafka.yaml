@@ -7,15 +7,19 @@ version: '2'
 
 volumes:
   ca.exporterorg.trade.com:
+  ca.exporterbankorg.trade.com:
   ca.importerorg.trade.com:
+  ca.importerbankorg.trade.com:
   ca.exportingentityorg.trade.com:
   orderer.trade.com:
   orderer1.trade.com:
   orderer2.trade.com:
   peer0.exporterorg.trade.com:
   peer1.exporterorg.trade.com:
+  peer0.exporterbankorg.trade.com:
   peer0.importerorg.trade.com:
   peer1.importerorg.trade.com:
+  peer0.importerbankorg.trade.com:
   peer0.exportingentityorg.trade.com:
   peer0.carrierorg.trade.com:
   peer0.regulatororg.trade.com:
@@ -41,6 +45,23 @@ services:
       - ./crypto-config/peerOrganizations/exporterorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-exporterorg
 
+  ca.exporterbankorg.trade.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-exporterbankorg
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterbankorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/87396d03585ece98f3ffdae47df96c2a49715a04ce6b39154b64bac6e3ef5cf8_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exporterbankorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/87396d03585ece98f3ffdae47df96c2a49715a04ce6b39154b64bac6e3ef5cf8_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/exporterbankorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca-exporterbankorg
+
   ca.importerorg.trade.com:
     image: hyperledger/fabric-ca
     environment:
@@ -52,11 +73,28 @@ services:
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerorg.trade.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d52ee0e277547783aecbafe211f5c87f2ff15e4532939ef2012e33d012b1ee32_sk
     ports:
-      - "8054:7054"
+      - "9054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/importerorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca-importerorg
+
+  ca.importerbankorg.trade.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-importerbankorg
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerbankorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d52ee0e277547783aecbafe211f5c87f2ff15e4532939ef2012e33d012b1ee32_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.importerbankorg.trade.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d52ee0e277547783aecbafe211f5c87f2ff15e4532939ef2012e33d012b1ee32_sk
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/importerbankorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca-importerbankorg
 
   ca.exportingentityorg.trade.com:
     image: hyperledger/fabric-ca
@@ -69,7 +107,7 @@ services:
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.exportingentityorg.trade.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0af2f0e3c9307db6392bfbad853ddf7b23afdbd0167f970dcb76ab0324b45d46_sk
     ports:
-      - "9054:7054"
+      - "11054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/exportingentityorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -86,7 +124,7 @@ services:
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.carrierorg.trade.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/55bc14e39fd34a11fad5d2bfd74e2f952609b8753e818136be78f222212695d3_sk
     ports:
-      - "10054:7054"
+      - "12054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/carrierorg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -103,7 +141,7 @@ services:
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.regulatororg.trade.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7988532335ff0f9a2d96cccd6555b572c2a317cf18008c28dd62a6e3dc9eeff_sk
     ports:
-      - "11054:7054"
+      - "13054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/regulatororg.trade.com/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -163,7 +201,15 @@ services:
       service: peer1.exporterorg.trade.com
     networks:
       - byfn      
-      
+
+  peer0.exporterbankorg.trade.com:
+    container_name: peer0.exporterbankorg.trade.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.exporterbankorg.trade.com
+    networks:
+      - byfn   
+
   peer0.importerorg.trade.com:
     container_name: peer0.importerorg.trade.com
     extends:
@@ -179,6 +225,14 @@ services:
       service: peer1.importerorg.trade.com
     networks:
       - byfn
+
+  peer0.importerbankorg.trade.com:
+    container_name: peer0.importerbankorg.trade.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.importerbankorg.trade.com
+    networks:
+      - byfn   
 
   peer0.exportingentityorg.trade.com:
     container_name: peer0.exportingentityorg.trade.com
@@ -308,5 +362,7 @@ services:
       - orderer2.trade.com
       - peer0.importerorg.trade.com
       - peer1.importerorg.trade.com
+      - peer0.importerbankorg.trade.com
       - peer0.exporterorg.trade.com
       - peer1.exporterorg.trade.com
+      - peer0.exporterbankorg.trade.com

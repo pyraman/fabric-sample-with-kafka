@@ -369,6 +369,24 @@ function generateCerts() {
 
 # Generate orderer genesis block, channel configuration transaction and
 # anchor peer update transactions
+
+function generateAnchorPeerUpdateForOrgMSP(){
+  OrgMSP=$1
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for $OrgMSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/"$OrgMSP"anchors.tx -channelID $CHANNEL_NAME -asOrg $OrgMSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for $OrgMSP..."
+    exit 1
+  fi
+  echo
+}
+
 function generateChannelArtifacts() {
   which configtxgen
   if [ "$?" -ne 0 ]; then
@@ -401,76 +419,15 @@ function generateChannelArtifacts() {
     echo "Failed to generate channel configuration transaction..."
     exit 1
   fi
-  echo
-  echo "#################################################################"
-  echo "#######    Generating anchor peer update for ExporterOrgMSP   ##########"
-  echo "#################################################################"
-  set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/ExporterOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ExporterOrgMSP
-  res=$?
-  set +x
-  if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for ExporterOrgMSP..."
-    exit 1
-  fi
+  
+  generateAnchorPeerUpdateForOrgMSP ExporterOrgMSP
+  generateAnchorPeerUpdateForOrgMSP ExporterBankOrgMSP
+  generateAnchorPeerUpdateForOrgMSP ImporterOrgMSP
+  generateAnchorPeerUpdateForOrgMSP ImporterBankOrgMSP
 
-  echo
-  echo "#################################################################"
-  echo "#######    Generating anchor peer update for ImporterOrgMSP   ##########"
-  echo "#################################################################"
-  set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/ImporterOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ImporterOrgMSP
-  res=$?
-  set +x
-  if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for ImporterOrgMSP..."
-    exit 1
-  fi
-
-  echo
-  echo "#################################################################"
-  echo "#######    Generating anchor peer update for ExportingEntityOrgMSP   ##########"
-  echo "#################################################################"
-  set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/ExportingEntityOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ExportingEntityOrgMSP
-  res=$?
-  set +x
-  if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for ExportingEntityOrgMSP..."
-    exit 1
-  fi
-
-  echo
-  echo "#################################################################"
-  echo "#######    Generating anchor peer update for CarrierOrgMSP   ##########"
-  echo "#################################################################"
-  set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/CarrierOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg CarrierOrgMSP
-  res=$?
-  set +x
-  if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for CarrierOrgMSP..."
-    exit 1
-  fi
-
-  echo
-  echo "#################################################################"
-  echo "#######    Generating anchor peer update for RegulatorOrgMSP   ##########"
-  echo "#################################################################"
-  set -x
-  configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/RegulatorOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg RegulatorOrgMSP
-  res=$?
-  set +x
-  if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for RegulatorOrgMSP..."
-    exit 1
-  fi
-
-  echo
+  generateAnchorPeerUpdateForOrgMSP ExportingEntityOrgMSP
+  generateAnchorPeerUpdateForOrgMSP CarrierOrgMSP
+  generateAnchorPeerUpdateForOrgMSP RegulatorOrgMSP
 }
 
 # Obtain the OS and Architecture string that will be used to select the correct

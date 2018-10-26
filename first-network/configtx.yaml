@@ -44,6 +44,23 @@ Organizations:
             - Host: peer0.exporterorg.trade.com
               Port: 7051
 
+    - &ExporterBankOrg
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: ExporterBankOrgMSP
+
+        # ID to load the MSP definition as
+        ID: ExporterBankOrgMSP
+
+        MSPDir: crypto-config/peerOrganizations/exporterbankorg.trade.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.exporterbankorg.trade.com
+              Port: 7051
+
     - &ImporterOrg
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
@@ -59,6 +76,23 @@ Organizations:
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.importerorg.trade.com
+              Port: 7051
+
+    - &ImporterBankOrg
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: ImporterBankOrgMSP
+
+        # ID to load the MSP definition as
+        ID: ImporterBankOrgMSP
+
+        MSPDir: crypto-config/peerOrganizations/importerbankorg.trade.com/msp
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.importerbankorg.trade.com
               Port: 7051
 
     - &ExportingEntityOrg
