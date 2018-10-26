@@ -267,10 +267,22 @@ function replacePrivateKey() {
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA_EXPORTORORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+
+  cd crypto-config/peerOrganizations/exporterorg.trade.com/ca/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/CA_EXPORTORBANKORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+  
+
   cd crypto-config/peerOrganizations/importerorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA_IMPORTERORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
+
+  cd crypto-config/peerOrganizations/importerorg.trade.com/ca/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/CA_IMPORTERBANKORG_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-kafka.yaml
 
   cd crypto-config/peerOrganizations/exportingentityorg.trade.com/ca/
   PRIV_KEY=$(ls *_sk)
