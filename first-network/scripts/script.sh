@@ -30,11 +30,23 @@ fi
 
 echo "Channel name : "$CHANNEL_NAME
 
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trade.com/orderers/orderer.trade.com/msp/tlscacerts/tlsca.trade.com-cert.pem
+PEER0_EXPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterorg.trade.com/peers/peer0.exporterorg.trade.com/tls/ca.crt
+PEER1_EXPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterorg.trade.com/peers/peer1.exporterorg.trade.com/tls/ca.crt
+PEER0_EXPORTERBANKORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterbankorg.trade.com/peers/peer0.exporterbankorg.trade.com/tls/ca.crt
+PEER0_IMPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls/ca.crt
+PEER1_IMPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerorg.trade.com/peers/peer1.importerorg.trade.com/tls/ca.crt
+PEER0_IMPORTERBANKORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerbankorg.trade.com/peers/peer0.importerbankorg.trade.com/tls/ca.crt
+PEER0_EXPORTINGENTITYORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exportingentityorg.trade.com/peers/peer0.exportingentityorg.trade.com/tls/ca.crt
+PEER0_CARRIERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/tls/ca.crt
+PEER0_REGULATORORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/regulatororg.trade.com/peers/peer0.regulatororg.trade.com/tls/ca.crt
+
 # import utils
 . scripts/utils.sh
 
 createChannel() {
-	setGlobals 0 1
+	setGlobals PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
 
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
                 set -x
@@ -54,97 +66,84 @@ createChannel() {
 }
 
 joinChannel () {
-	for org in 1 2; do
-	    for peer in 0 1; do
-		joinChannelWithRetry $peer $org
-		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
-		sleep $DELAY
-		echo
-	    done
-	done
+	joinChannelWithRetry PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
+	joinChannelWithRetry PEER1 exporterorg ExporterOrgMSP $PEER1_EXPORTERORG_CA
+	joinChannelWithRetry PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
+	joinChannelWithRetry PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
+	joinChannelWithRetry PEER1 importerorg ImporterOrgMSP $PEER1_IMPORTERORG_CA
+	joinChannelWithRetry PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
+	joinChannelWithRetry PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
+	joinChannelWithRetry PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
+	joinChannelWithRetry PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA
+}
 
-	joinChannelWithRetry 0 3
-	echo "===================== peer0.org3 joined channel '$CHANNEL_NAME' ===================== "
-	sleep $DELAY
+updateAnchorPeers(){
+	## Set the anchor peers for each org in the channel
+	updateAnchorPeer PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
+	updateAnchorPeer PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
+	updateAnchorPeer PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
+	updateAnchorPeer PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
+	updateAnchorPeer PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
+	updateAnchorPeer PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
+	updateAnchorPeer PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA
+}
 
-	joinChannelWithRetry 0 4
-	echo "===================== peer0.org4 joined channel '$CHANNEL_NAME' ===================== "
-	sleep $DELAY
-
-	joinChannelWithRetry 0 5
-	echo "===================== peer0.org5 joined channel '$CHANNEL_NAME' ===================== "
-	sleep $DELAY
+installChaincodeOnPeers(){
+	## Install chaincode on peer0.exporter and peer0.importerorg
+	installChaincode PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
+	installChaincode PEER1 exporterorg ExporterOrgMSP $PEER1_EXPORTERORG_CA
+	installChaincode PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
+	installChaincode PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
+	installChaincode PEER1 importerorg ImporterOrgMSP $PEER1_IMPORTERORG_CA
+	installChaincode PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
+	installChaincode PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
+	installChaincode PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
+	installChaincode PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA
 }
 
 ## Create channel
 echo "Creating channel..."
 createChannel
-
 ## Join all the peers to the channel
 echo "Having all peers join the channel..."
 joinChannel
 
-## Set the anchor peers for each org in the channel
-echo "Updating anchor peers for exporterorg..."
-updateAnchorPeers 0 1
-echo "Updating anchor peers for importerorg..."
-updateAnchorPeers 0 2
+echo "update anchor peers"
+updateAnchorPeers
 
-echo "Updating anchor peers for exportingentityorg..."
-updateAnchorPeers 0 3
-
-echo "Updating anchor peers for carrierorg..."
-updateAnchorPeers 0 4
-
-echo "Updating anchor peers for regulatororg..."
-updateAnchorPeers 0 5
-
-## Install chaincode on peer0.exporter and peer0.importerorg
-echo "Installing chaincode on peer0.exporterorg..."
-installChaincode 0 1
-echo "Install chaincode on peer0.importerorg..."
-installChaincode 0 2
-
-echo "Install chaincode on peer0.exportingentityorg..."
-installChaincode 0 3
-
-echo "Install chaincode on peer0.carrierorg..."
-installChaincode 0 4
-
-echo "Install chaincode on peer0.regulatororg..."
-installChaincode 0 5
+installChaincodeOnPeers
 
 # Instantiate chaincode on peer0.importerorg
 echo "Instantiating chaincode on peer0.importerorg..."
-instantiateChaincode 0 2
+instantiateChaincode PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
 
 # Query chaincode on peer0.exporter
 echo "Querying chaincode on peer0.exporterorg..."
-chaincodeQuery 0 1 100
+chaincodeQuery PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA 100
 
 # Query chaincode on peer0.exportingentityorg
 echo "Querying chaincode on peer0.exportingentityorg..."
-chaincodeQuery 0 3 100
+chaincodeQuery PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA 100
 
 # Query chaincode on peer0.carrierorg
 echo "Querying chaincode on peer0.carrierorg..."
-chaincodeQuery 0 4 100
+chaincodeQuery PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA 100
 
 # Query chaincode on peer0.regulatororg
 echo "Querying chaincode on peer0.regulatororg..."
-chaincodeQuery 0 5 100
+chaincodeQuery PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA 100
 
 # Invoke chaincode on peer0.exporter and peer0.importerorg
 echo "Sending invoke transaction on peer0.exporter to peer0.importerorg..."
-chaincodeInvoke 0 1 0 2
+#chaincodeInvoke 0 1 0 2
 
 ## Install chaincode on peer1.importerorg
 echo "Installing chaincode on peer1.importerorg..."
-installChaincode 1 2
+installChaincode PEER1 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
 
 # Query on chaincode on peer1.importerorg, check if the result is 90
 echo "Querying chaincode on peer1.importerorg..."
-chaincodeQuery 1 2 90
+chaincodeQuery PEER1 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA 90
 
 echo
 echo "========= All GOOD, BYFN execution completed =========== "

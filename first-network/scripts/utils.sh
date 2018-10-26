@@ -6,12 +6,6 @@
 
 # This is a collection of bash functions used by different scripts
 
-ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trade.com/orderers/orderer.trade.com/msp/tlscacerts/tlsca.trade.com-cert.pem
-PEER0_EXPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exporterorg.trade.com/peers/peer0.exporterorg.trade.com/tls/ca.crt
-PEER0_IMPORTERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls/ca.crt
-PEER0_EXPORTINGENTITYORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/exportingentityorg.trade.com/peers/peer0.exportingentityorg.trade.com/tls/ca.crt
-PEER0_CARRIERORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/tls/ca.crt
-PEER0_REGULATORORG_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/regulatororg.trade.com/peers/peer0.regulatororg.trade.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -30,7 +24,28 @@ setOrdererGlobals() {
   CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/trade.com/users/Admin@trade.com/msp
 }
 
-setGlobals() {
+setGlobals(){
+  PEER=$1
+  ORG=$2
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+
+  CORE_PEER_LOCALMSPID=$ORG_MSP
+  CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG_CA
+  CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$ORG.trade.com/users/Admin@$ORG.trade.com/msp
+  if [ $PEER == "PEER0" ]; then
+    CORE_PEER_ADDRESS=peer0.$ORG.trade.com:7051
+  else
+    CORE_PEER_ADDRESS=peer1.$ORG.trade.com:7051
+  fi
+
+  if [ "$VERBOSE" == "true" ]; then
+    env | grep CORE
+  fi
+}
+
+
+setGlobals1() {
   PEER=$1
   ORG=$2
   if [ $ORG -eq 1 ]; then
@@ -90,11 +105,14 @@ setGlobals() {
   fi
 }
 
-updateAnchorPeers() {
+updateAnchorPeer() {
   PEER=$1
   ORG=$2
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+
   echo "[updateAnchorPeers] peer: $PEER org: $ORG BEGIN"
-  setGlobals $PEER $ORG
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
@@ -119,7 +137,10 @@ updateAnchorPeers() {
 joinChannelWithRetry() {
   PEER=$1
   ORG=$2
-  setGlobals $PEER $ORG
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
 
   set -x
   peer channel join -b $CHANNEL_NAME.block >&log.txt
@@ -128,19 +149,25 @@ joinChannelWithRetry() {
   cat log.txt
   if [ $res -ne 0 -a $COUNTER -lt $MAX_RETRY ]; then
     COUNTER=$(expr $COUNTER + 1)
-    echo "peer${PEER}.org${ORG} failed to join the channel, Retry after $DELAY seconds"
+    echo "$PEER.$ORG failed to join the channel, Retry after $DELAY seconds"
     sleep $DELAY
-    joinChannelWithRetry $PEER $ORG
+    joinChannelWithRetry $PEER $ORG $ORG_MSP $PEER0_ORG_CA
   else
     COUNTER=1
   fi
-  verifyResult $res "After $MAX_RETRY attempts, peer${PEER}.org${ORG} has failed to join channel '$CHANNEL_NAME' "
+  verifyResult $res "After $MAX_RETRY attempts, $PEER.$ORG has failed to join channel '$CHANNEL_NAME' "
+  echo "===================== $PEER.$ORG joined channel '$CHANNEL_NAME' ===================== "
+  sleep $DELAY
 }
 
 installChaincode() {
   PEER=$1
   ORG=$2
-  setGlobals $PEER $ORG
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+
+  echo "=============================== INSTALL CHAINCODE ON: $PEER.$ORG BEGIN ==============================="
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
   VERSION=${3:-1.0}
   set -x
   peer chaincode install -n mycc -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
@@ -148,14 +175,19 @@ installChaincode() {
   set +x
   cat log.txt
   verifyResult $res "Chaincode installation on peer${PEER}.org${ORG} has failed"
-  echo "===================== Chaincode is installed on peer${PEER}.org${ORG} ===================== "
+  echo "======================== CHAINCODE IS INSTALLED CHAINCODE ON: $PEER.$ORG END =========================="
+
   echo
 }
 
 instantiateChaincode() {
   PEER=$1
   ORG=$2
-  setGlobals $PEER $ORG
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+
+  echo "=============================== INSTANTIATE CHAINCODE ON: $PEER.$ORG BEGIN ==============================="
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
   VERSION=${3:-1.0}
 
   # while 'peer chaincode' command can get the orderer endpoint from the peer
@@ -174,14 +206,17 @@ instantiateChaincode() {
   fi
   cat log.txt
   verifyResult $res "Chaincode instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
-  echo "===================== Chaincode is instantiated on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+
+  echo "======================== CHAINCODE IS INSTANTIATED CHAINCODE ON: $PEER.$ORG END =========================="
   echo
 }
 
 upgradeChaincode() {
   PEER=$1
   ORG=$2
-  setGlobals $PEER $ORG
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
 
   set -x
   peer chaincode upgrade -o orderer.trade.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('ExporterOrgMSP.peer','ImporterOrgMSP.peer','Org3MSP.peer')"
@@ -196,8 +231,10 @@ upgradeChaincode() {
 chaincodeQuery() {
   PEER=$1
   ORG=$2
-  setGlobals $PEER $ORG
-  EXPECTED_RESULT=$3
+  ORG_MSP=$3
+  PEER0_ORG_CA=$4
+  setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
+  EXPECTED_RESULT=$5
   echo "===================== Querying on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'... ===================== "
   local rc=1
   local starttime=$(date +%s)
@@ -320,7 +357,7 @@ parsePeerConnectionParameters() {
 # Accepts as many peer/org pairs as desired and requests endorsement from each
 chaincodeInvoke() {
   parsePeerConnectionParameters $@
-  setGlobals 0 1
+  setGlobals PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
   res=$?
   verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
 
