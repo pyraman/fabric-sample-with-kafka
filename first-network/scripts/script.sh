@@ -135,10 +135,12 @@ chaincodeQuery PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA 100
 
 # Invoke chaincode on peer0.exporter and peer0.importerorg
 echo "Sending invoke transaction on peer0.exporter to peer0.importerorg..."
-#chaincodeInvoke 0 1 0 2
+chaincodeInvoke
+
+chaincodeQuery PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA 90
 
 ## Install chaincode on peer1.importerorg
-echo "Installing chaincode on peer1.importerorg..."
+#echo "Installing chaincode on peer1.importerorg..."
 installChaincode PEER1 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
 
 # Query on chaincode on peer1.importerorg, check if the result is 90
