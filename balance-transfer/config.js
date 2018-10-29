@@ -12,7 +12,15 @@ else
 // indicate to the application where the setup file is located so it able
 // to have the hfc load it to initalize the fabric client instance
 hfc.setConfigSetting('network-connection-profile-path',path.join(__dirname, 'artifacts' ,file));
-hfc.setConfigSetting('org1-connection-profile-path',path.join(__dirname, 'artifacts', 'org1.yaml'));
-hfc.setConfigSetting('org2-connection-profile-path',path.join(__dirname, 'artifacts', 'org2.yaml'));
+hfc.setConfigSetting('exporterorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exporterorg.yaml'));
+hfc.setConfigSetting('exporterbankorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exporterbankorg.yaml'));
+
+hfc.setConfigSetting('importerorg-connection-profile-path',path.join(__dirname, 'artifacts', 'importerorg.yaml'));
+hfc.setConfigSetting('importerbankorg-connection-profile-path',path.join(__dirname, 'artifacts', 'importerbankorg.yaml'));
+
+hfc.setConfigSetting('exportingentityorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exportingentityorg.yaml'));
+hfc.setConfigSetting('carrierorg-connection-profile-path',path.join(__dirname, 'artifacts', 'carrierorg.yaml'));
+hfc.setConfigSetting('regulatororg-connection-profile-path',path.join(__dirname, 'artifacts', 'regulatororg.yaml'));
+
 // some other settings the application might need to know
 hfc.addConfigFile(path.join(__dirname, 'config.json'));

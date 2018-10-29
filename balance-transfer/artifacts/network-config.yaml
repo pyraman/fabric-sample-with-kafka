@@ -4,7 +4,7 @@
 # blockchain network that are necessary for the applications to interact with it. These are all
 # knowledge that must be acquired from out-of-band sources. This file provides such a source.
 #
-name: "balance-transfer"
+name: "trade-network"
 
 #
 # Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
@@ -27,7 +27,7 @@ description: "Balance Transfer Network"
 version: "1.0"
 
 #
-# The client section will be added on a per org basis see org1.yaml and org2.yaml
+# The client section will be added on a per org basis see exporterorg.yaml and importerorg.yaml
 #
 #client:
 
@@ -38,53 +38,69 @@ version: "1.0"
 #
 channels:
   # name of the channel
-  mychannel:
+  tradechannel:
     # Required. list of orderers designated by the application to use for transactions on this
-    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
+    # channel. This list can be a result of access control ("exporterorg" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
     orderers:
-      - orderer.example.com
+      - orderer.trade.com
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.org1.example.com:
-        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
-        # have the chaincode installed. The app can also use this property to decide which peers
-        # to send the chaincode install request. Default: true
-        endorsingPeer: true
-
-        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
-        # installed. The app can also use this property to decide which peers to send the
-        # chaincode install request. Default: true
-        chaincodeQuery: true
-
-        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
-        # queryBlock(), queryTransaction(), etc. Default: true
-        ledgerQuery: true
-
-        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
-        # produce events but the app typically only needs to connect to one to listen to events.
-        # Default: true
-        eventSource: true
-
-      peer1.org1.example.com:
-        endorsingPeer: false
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: false
-
-      peer0.org2.example.com:
+      peer0.exporterorg.trade.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer1.org2.example.com:
+      peer1.exporterorg.trade.com:
         endorsingPeer: false
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: false
+
+      peer0.exporterbankorg.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.importerorg.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.importerorg.trade.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+
+      peer0.importerbankorg.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.exportingentityorg.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.carrierorg.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.regulator.trade.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
 
     # [Optional]. what chaincodes are expected to exist on this channel? The application can use
     # this information to validate that the target peers are in the expected state by comparing
@@ -97,12 +113,12 @@ channels:
 # list of participating organizations in this network
 #
 organizations:
-  Org1:
-    mspid: Org1MSP
+  ExporterOrg:
+    mspid: ExporterOrgMSP
 
     peers:
-      - peer0.org1.example.com
-      - peer1.org1.example.com
+      - peer0.exporterorg.trade.com
+      - peer1.exporterorg.trade.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -110,7 +126,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca-org1
+      - ca-exporterorg
 
     # [Optional]. If the application is going to make requests that are reserved to organization
     # administrators, including creating/updating channels, installing/instantiating chaincodes, it
@@ -120,26 +136,81 @@ organizations:
     # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
     # this route as an alternative when it exists.
     adminPrivateKey:
-      path: first-network/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/dad33d90478d9265975b3877cd80e0f242ba6c98f00c0a5e4a9c4400fd10cb14_sk
+      path: Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/keystore/ADMIN_EXPORTERORG_KEYSTORE
     signedCert:
-      path: first-network/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      path: Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/signcerts/Admin@exporterorg.trade.com-cert.pem
 
   # the profile will contain public information about organizations other than the one it belongs to.
   # These are necessary information to make transaction lifecycles work, including MSP IDs and
   # peers with a public URL to send transaction proposals. The file will not contain private
   # information reserved for members of the organization, such as admin key and certificate,
   # fabric-ca registrar enroll ID and secret, etc.
-  Org2:
-    mspid: Org2MSP
+  ImporterOrg:
+    mspid: ImporterOrgMSP
     peers:
-      - peer0.org2.example.com
-      - peer1.org2.example.com
+      - peer0.importerorg.trade.com
+      - peer1.importerorg.trade.com
     certificateAuthorities:
-      - ca-org2
+      - ca-importerorg
     adminPrivateKey:
-      path: first-network/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/4db771253a45c3250baf614b38d1d0d8804fb0c4e7060c2a8082058f36b6a0bf_sk
+      path: Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/keystore/ADMIN_IMPORTERORG_KEYSTORE
     signedCert:
-      path: first-network/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
+      path: Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/signcerts/Admin@importerorg.trade.com-cert.pem
+
+  ExporterBankOrg:
+    mspid: ExporterBankOrgMSP
+    peers:
+      - peer0.exporterbankorg.trade.com
+    certificateAuthorities:
+      - ca-exporterbankorg
+    adminPrivateKey:
+      path: Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/keystore/ADMIN_EXPORTERBANKORG_KEYSTORE
+    signedCert:
+      path: Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/signcerts/Admin@exporterbankorg.trade.com-cert.pem
+
+  ImporterBankOrg:
+    mspid: ImporterBankOrgMSP
+    peers:
+      - peer0.importerbankorg.trade.com
+    certificateAuthorities:
+      - ca-importerbankorg
+    adminPrivateKey:
+      path: Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/keystore/ADMIN_IMPORTERBANKORG_KEYSTORE
+    signedCert:
+      path: Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/signcerts/Admin@importerbankorg.trade.com-cert.pem
+
+  ExportingEntityOrg:
+    mspid: ExportingEntityOrgMSP
+    peers:
+      - peer0.exportingentityorg.trade.com
+    certificateAuthorities:
+      - ca-exportingentityorg
+    adminPrivateKey:
+      path: Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/keystore/ADMIN_EXPORTINGENTITYORG_KEYSTORE
+    signedCert:
+      path: Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/signcerts/Admin@exportingentityorg.trade.com-cert.pem
+
+  CarrierOrg:
+    mspid: CarrierOrgMSP
+    peers:
+      - peer0.carrierorg.trade.com
+    certificateAuthorities:
+      - ca-carrierorg
+    adminPrivateKey:
+      path: Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/keystore/ADMIN_CARRIERORG_KEYSTORE
+    signedCert:
+      path: Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/signcerts/Admin@carrierorg.trade.com-cert.pem
+
+  RegulatorOrg:
+    mspid: RegulatorOrgMSP
+    peers:
+      - peer0.regulatororg.trade.com
+    certificateAuthorities:
+      - ca-regulatororg
+    adminPrivateKey:
+      path: Trade-Network/crypto-config/peerOrganizations/regulatororg.trade.com/users/Admin@regulatororg.trade.com/msp/keystore/ADMIN_REGULATOR_KEYSTORE
+    signedCert:
+      path: Trade-Network/crypto-config/peerOrganizations/regulatororg.trade.com/users/Admin@regulatororg.trade.com/msp/signcerts/Admin@regulatororg.trade.com-cert.pem
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -147,52 +218,109 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer0.example.com:
+  orderer.trade.com:
     url: grpcs://localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer0.example.com
+      ssl-target-name-override: orderer.trade.com
 
     tlsCACerts:
-      path: first-network/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt
+      path: Trade-Network/crypto-config/ordererOrganizations/trade.com/orderers/orderer.trade.com/tls/ca.crt
+
+  orderer1.trade.com:
+    url: grpcs://localhost:8050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      ssl-target-name-override: orderer1.trade.com
+
+    tlsCACerts:
+      path: Trade-Network/crypto-config/ordererOrganizations/trade.com/orderers/orderer1.trade.com/tls/ca.crt
+
+  orderer2.trade.com:
+    url: grpcs://localhost:9050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      ssl-target-name-override: orderer2.trade.com
+
+    tlsCACerts:
+      path: Trade-Network/crypto-config/ordererOrganizations/trade.com/orderers/orderer2.trade.com/tls/ca.crt
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.example.com:
+  peer0.exporterorg.trade.com:
     # this URL is used to send endorsement and query requests
     url: grpcs://localhost:7051
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.example.com
+      ssl-target-name-override: peer0.exporterorg.trade.com
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+      path: Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/peers/peer0.exporterorg.trade.com/tls/ca.crt
 
-  peer1.org1.example.com:
+  peer1.exporterorg.trade.com:
     url: grpcs://localhost:7056
     grpcOptions:
-      ssl-target-name-override: peer1.org1.example.com
+      ssl-target-name-override: peer1.exporterorg.trade.com
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+      path: Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/peers/peer1.exporterorg.trade.com/tls/ca.crt
 
-  peer0.org2.example.com:
+  peer0.exporterbankorg.trade.com:
+    url: grpcs://localhost:7059
+    grpcOptions:
+      ssl-target-name-override: peer0.exporterbankorg.trade.com
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/peers/peer0.exporterbankorg.trade.com/tls/ca.crt
+
+  peer0.importerorg.trade.com:
     url: grpcs://localhost:8051
     grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
+      ssl-target-name-override: peer0.importerorg.trade.com
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+      path: Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/peers/peer0.importerorg.trade.com/tls/ca.crt
 
-  peer1.org2.example.com:
+  peer1.importerorg.trade.com:
     url: grpcs://localhost:8056
     eventUrl: grpcs://localhost:8058
     grpcOptions:
-      ssl-target-name-override: peer1.org2.example.com
+      ssl-target-name-override: peer1.importerorg.trade.com
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+      path: Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/peers/peer1.importerorg.trade.com/tls/ca.crt
+
+  peer0.importerbankorg.trade.com:
+    url: grpcs://localhost:8059
+    grpcOptions:
+      ssl-target-name-override: peer0.importerbankorg.trade.com
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/peers/peer0.importerbankorg.trade.com/tls/ca.crt
+
+  peer0.exportingentityorg.trade.com:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.exportingentityorg.trade.com
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/peers/peer0.exportingentityorg.trade.com/tls/ca.crt
+
+  peer0.carrierorg.trade.com:
+    url: grpcs://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer0.carrierorg.trade.com
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/peers/peer0.carrierorg.trade.com/tls/ca.crt
+
+  peer0.regulatororg.trade.com:
+    url: grpcs://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.regulatororg.trade.com
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/regulatororg.trade.com/peers/peer0.regulatororg.trade.com/tls/ca.crt
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -200,14 +328,14 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca-org1:
+  ca-exporterorg:
     url: https://localhost:7054
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
     httpOptions:
       verify: false
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+      path: Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/ca/ca.exporterorg.trade.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -215,16 +343,76 @@ certificateAuthorities:
       - enrollId: admin
         enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca-org1
+    caName: ca-exporterorg
 
-  ca-org2:
+  ca-exporterbankorg:
     url: https://localhost:8054
     httpOptions:
       verify: false
     tlsCACerts:
-      path: first-network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+      path: Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/ca/ca.exporterbankorg.trade.com-cert.pem
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca-org2
+    caName: ca-exporterbankorg
+
+  ca-importerorg:
+    url: https://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/ca/ca.importerorg.trade.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-importerorg
+
+  ca-importerbankorg:
+    url: https://localhost:10054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/ca/ca.importerbankorg.trade.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-importerbankorg
+
+  ca-exportingentityorg:
+    url: https://localhost:11054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/ca/ca.exportingentityorg.trade.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-exportingentityorg
+
+  ca-carrierorg:
+    url: https://localhost:12054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/ca/ca.carrierorg.trade.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-carrierorg
+
+  ca-regulatororg:
+    url: https://localhost:13054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: Trade-Network/crypto-config/peerOrganizations/regulatororg.trade.com/ca/ca.regulatororg.trade.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca-regulatororg

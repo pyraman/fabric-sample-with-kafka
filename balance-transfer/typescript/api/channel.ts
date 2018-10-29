@@ -34,7 +34,7 @@ export default function channelHandlers(app: express.Application) {
         const channelConfigPath = req.body.channelConfigPath;
 
         logger.debug('Channel name : ' + channelName);
-        // ../artifacts/channel/mychannel.tx
+        // ../artifacts/channel/tradechannel.tx
         logger.debug('channelConfigPath : ' + channelConfigPath);
 
         if (!channelName) {

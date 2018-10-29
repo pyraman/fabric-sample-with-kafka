@@ -12,7 +12,7 @@ the **__fabric-client__** and **__fabric-ca-client__** Node.js SDK APIs for type
 * [Download Docker images](http://hyperledger-fabric.readthedocs.io/en/latest/samples.html#binaries)
 
 ```
-cd fabric-samples/balance-transfer/
+cd fabric-samples/trade-network/
 ```
 
 Once you have completed the above setup, you will have provisioned a local network with the following docker container configuration:
@@ -25,18 +25,18 @@ Once you have completed the above setup, you will have provisioned a local netwo
 
 * Crypto material has been generated using the **cryptogen** tool from Hyperledger Fabric and mounted to all peers, the orderering node and CA containers. More details regarding the cryptogen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#crypto-generator).
 
-* An Orderer genesis block (genesis.block) and channel configuration transaction (mychannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
+* An Orderer genesis block (genesis.block) and channel configuration transaction (tradechannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
 
 ## Running the sample program
 
-There are two options available for running the balance-transfer sample as shown below.
+There are two options available for running the trade-network sample as shown below.
 
 ### Option 1
 
 ##### Terminal Window 1
 
 ```
-cd fabric-samples/balance-transfer/typescript
+cd fabric-samples/trade-network/typescript
 
 ./runApp.sh
 
@@ -55,7 +55,7 @@ See instructions at [https://stedolan.github.io/jq/](https://stedolan.github.io/
 
 Test the APIs as follows:
 ```
-cd fabric-samples/balance-transfer/typescript
+cd fabric-samples/trade-network/typescript
 
 ./testAPIs.sh
 
@@ -93,7 +93,7 @@ PORT=4000 ts-node app.ts
 
 ##### Terminal Window 3
 
-* Execute the REST APIs from the section [Sample REST APIs Requests](https://github.com/hyperledger/fabric-samples/tree/master/balance-transfer#sample-rest-apis-requests)
+* Execute the REST APIs from the section [Sample REST APIs Requests](https://github.com/hyperledger/fabric-samples/tree/master/trade-network#sample-rest-apis-requests)
 
 ## Sample REST APIs Requests
 
@@ -124,8 +124,8 @@ curl -s -X POST \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
-	"channelName":"mychannel",
-	"channelConfigPath":"../artifacts/channel/mychannel.tx"
+	"channelName":"tradechannel",
+	"channelConfigPath":"../artifacts/channel/tradechannel.tx"
 }'
 ```
 
@@ -135,7 +135,7 @@ Please note that the Header **authorization** must contain the JWT returned from
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
+  http://localhost:4000/channels/tradechannel/peers \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
@@ -161,7 +161,7 @@ curl -s -X POST \
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes \
+  http://localhost:4000/channels/tradechannel/chaincodes \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
@@ -175,7 +175,7 @@ curl -s -X POST \
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes/mycc \
+  http://localhost:4000/channels/tradechannel/chaincodes/mycc \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
@@ -189,7 +189,7 @@ curl -s -X POST \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer1&fcn=query&args=%5B%22a%22%5D" \
+  "http://localhost:4000/channels/tradechannel/chaincodes/mycc?peer=peer1&fcn=query&args=%5B%22a%22%5D" \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json"
 ```
@@ -198,7 +198,7 @@ curl -s -X GET \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/blocks/1?peer=peer1" \
+  "http://localhost:4000/channels/tradechannel/blocks/1?peer=peer1" \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json"
 ```
@@ -206,7 +206,7 @@ curl -s -X GET \
 ### Query Transaction by TransactionID
 
 ```
-curl -s -X GET http://localhost:4000/channels/mychannel/transactions/TRX_ID?peer=peer1 \
+curl -s -X GET http://localhost:4000/channels/tradechannel/transactions/TRX_ID?peer=peer1 \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json"
 ```
@@ -217,7 +217,7 @@ curl -s -X GET http://localhost:4000/channels/mychannel/transactions/TRX_ID?peer
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel?peer=peer1" \
+  "http://localhost:4000/channels/tradechannel?peer=peer1" \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json"
 ```

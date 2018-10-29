@@ -1,5 +1,5 @@
 {
-  "name": "balance-transfer-typescript",
+  "name": "trade-network-typescript",
   "version": "0.1.0",
   "description": "The balance transfer sample written using typescript",
   "main": "index.js",

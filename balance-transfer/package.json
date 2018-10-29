@@ -1,14 +1,14 @@
 {
-  "name": "balance-transfer",
+  "name": "trade-network",
   "version": "1.0.0",
-  "description": "A balance-transfer example node program to demonstrate using node.js SDK APIs",
+  "description": "A trade-network example node program to demonstrate using node.js SDK APIs",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "keywords": [
     "fabric-client sample app",
-    "balance-transfer node sample",
+    "trade-network node sample",
     "v1.0 fabric nodesdk sample"
   ],
   "engines": {

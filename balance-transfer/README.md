@@ -11,7 +11,7 @@ A sample Node.js app to demonstrate **__fabric-client__** & **__fabric-ca-client
 * [Download Docker images](http://hyperledger-fabric.readthedocs.io/en/latest/samples.html#binaries)
 
 ```
-cd fabric-samples/balance-transfer/
+cd fabric-samples/trade-network/
 ```
 
 Once you have completed the above setup, you will have provisioned a local network with the following docker container configuration:
@@ -22,11 +22,11 @@ Once you have completed the above setup, you will have provisioned a local netwo
 
 #### Artifacts
 * Crypto material has been generated using the **cryptogen** tool from Hyperledger Fabric and mounted to all peers, the orderering node and CA containers. More details regarding the cryptogen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#crypto-generator).
-* An Orderer genesis block (genesis.block) and channel configuration transaction (mychannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
+* An Orderer genesis block (genesis.block) and channel configuration transaction (tradechannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
 
 ## Running the sample program
 
-There are two options available for running the balance-transfer sample
+There are two options available for running the trade-network sample
 For each of these options, you may choose to run with chaincode written in golang or in node.js.
 
 ### Option 1:
@@ -54,7 +54,7 @@ PORT=4000 node app
 
 ##### Terminal Window 3
 
-* Execute the REST APIs from the section [Sample REST APIs Requests](https://github.com/hyperledger/fabric-samples/tree/master/balance-transfer#sample-rest-apis-requests)
+* Execute the REST APIs from the section [Sample REST APIs Requests](https://github.com/hyperledger/fabric-samples/tree/master/trade-network#sample-rest-apis-requests)
 
 
 ### Option 2:
@@ -62,7 +62,7 @@ PORT=4000 node app
 ##### Terminal Window 1
 
 ```
-cd fabric-samples/balance-transfer
+cd fabric-samples/trade-network
 
 ./runApp.sh
 
@@ -81,7 +81,7 @@ instructions [https://stedolan.github.io/jq/](https://stedolan.github.io/jq/)
 
 With the application started in terminal 1, next, test the APIs by executing the script - **testAPIs.sh**:
 ```
-cd fabric-samples/balance-transfer
+cd fabric-samples/trade-network
 
 ## To use golang chaincode execute the following command
 
@@ -122,8 +122,8 @@ curl -s -X POST \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"channelName":"mychannel",
-	"channelConfigPath":"../artifacts/channel/mychannel.tx"
+	"channelName":"tradechannel",
+	"channelConfigPath":"../artifacts/channel/tradechannel.tx"
 }'
 ```
 
@@ -133,11 +133,11 @@ Please note that the Header **authorization** must contain the JWT returned from
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
+  http://localhost:4000/channels/tradechannel/peers \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.org1.example.com","peer1.org1.example.com"]
+	"peers": ["peer0.org1.trade.com","peer1.org1.trade.com"]
 }'
 ```
 ### Install chaincode
@@ -148,7 +148,7 @@ curl -s -X POST \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.org1.example.com","peer1.org1.example.com"],
+	"peers": ["peer0.org1.trade.com","peer1.org1.trade.com"],
 	"chaincodeName":"mycc",
 	"chaincodePath":"github.com/example_cc/go",
 	"chaincodeType": "golang",
@@ -163,7 +163,7 @@ curl -s -X POST \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.org1.example.com","peer1.org1.example.com"],
+	"peers": ["peer0.org1.trade.com","peer1.org1.trade.com"],
 	"chaincodeName":"mycc",
 	"chaincodePath":"$PWD/artifacts/src/github.com/example_cc/node",
 	"chaincodeType": "node",
@@ -175,11 +175,11 @@ curl -s -X POST \
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes \
+  http://localhost:4000/channels/tradechannel/chaincodes \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.org1.example.com","peer1.org1.example.com"],
+	"peers": ["peer0.org1.trade.com","peer1.org1.trade.com"],
 	"chaincodeName":"mycc",
 	"chaincodeVersion":"v0",
 	"chaincodeType": "golang",
@@ -192,11 +192,11 @@ curl -s -X POST \
 
 ```
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes/mycc \
+  http://localhost:4000/channels/tradechannel/chaincodes/mycc \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.org1.example.com","peer1.org1.example.com"],
+	"peers": ["peer0.org1.trade.com","peer1.org1.trade.com"],
 	"fcn":"move",
 	"args":["a","b","10"]
 }'
@@ -207,7 +207,7 @@ curl -s -X POST \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer0.org1.example.com&fcn=query&args=%5B%22a%22%5D" \
+  "http://localhost:4000/channels/tradechannel/chaincodes/mycc?peer=peer0.org1.trade.com&fcn=query&args=%5B%22a%22%5D" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -216,7 +216,7 @@ curl -s -X GET \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/blocks/1?peer=peer0.org1.example.com" \
+  "http://localhost:4000/channels/tradechannel/blocks/1?peer=peer0.org1.trade.com" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -224,7 +224,7 @@ curl -s -X GET \
 ### Query Transaction by TransactionID
 
 ```
-curl -s -X GET http://localhost:4000/channels/mychannel/transactions/<put transaction id here>?peer=peer0.org1.example.com \
+curl -s -X GET http://localhost:4000/channels/tradechannel/transactions/<put transaction id here>?peer=peer0.org1.trade.com \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -235,7 +235,7 @@ curl -s -X GET http://localhost:4000/channels/mychannel/transactions/<put transa
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel?peer=peer0.org1.example.com" \
+  "http://localhost:4000/channels/tradechannel?peer=peer0.org1.trade.com" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -244,7 +244,7 @@ curl -s -X GET \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/chaincodes?peer=peer0.org1.example.com&type=installed" \
+  "http://localhost:4000/chaincodes?peer=peer0.org1.trade.com&type=installed" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -253,7 +253,7 @@ curl -s -X GET \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/chaincodes?peer=peer0.org1.example.com&type=instantiated" \
+  "http://localhost:4000/chaincodes?peer=peer0.org1.trade.com&type=instantiated" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -262,7 +262,7 @@ curl -s -X GET \
 
 ```
 curl -s -X GET \
-  "http://localhost:4000/channels?peer=peer0.org1.example.com" \
+  "http://localhost:4000/channels?peer=peer0.org1.trade.com" \
   -H "authorization: Bearer <put JSON Web Token here>" \
   -H "content-type: application/json"
 ```
@@ -286,7 +286,7 @@ You have the ability to change configuration parameters by either directly editi
 If you choose to customize your docker-compose yaml file by hardcoding IP Addresses and PORT information for your peers and orderer, then you MUST also add the identical values into the network-config.yaml file. The url and eventUrl settings will need to be adjusted to match your docker-compose yaml file.
 
 ```
-peer1.org1.example.com:
+peer1.org1.trade.com:
   url: grpcs://x.x.x.x:7056
   eventUrl: grpcs://x.x.x.x:7058
 
