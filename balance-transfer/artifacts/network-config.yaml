@@ -136,7 +136,7 @@ organizations:
     # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
     # this route as an alternative when it exists.
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/keystore/0c822cf93a0feff519516981d709ab58fa977ee6afcdb884f3eebf487dbfbf79_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/keystore/ADMIN_EXPORTERORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/signcerts/Admin@exporterorg.trade.com-cert.pem
 
@@ -153,7 +153,7 @@ organizations:
     certificateAuthorities:
       - ca-importerorg
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/keystore/f8b5d04c6bed9b3e0df8bb1215bfc6ea350e1186c404717574772ff727704f40_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/keystore/ADMIN_IMPORTERORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/signcerts/Admin@importerorg.trade.com-cert.pem
 
@@ -164,7 +164,7 @@ organizations:
     certificateAuthorities:
       - ca-exporterbankorg
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/keystore/475b3c6328e9718720191a7bcb8ecbbf3522d46511ec685e38f30c21a3893c3b_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/keystore/ADMIN_EXPORTERBANKORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/signcerts/Admin@exporterbankorg.trade.com-cert.pem
 
@@ -175,7 +175,7 @@ organizations:
     certificateAuthorities:
       - ca-importerbankorg
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/keystore/16b193ec5703070a3e3b666436ac512686e536f36a05b8207f4a83a55829bc86_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/keystore/ADMIN_IMPORTERBANKORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/signcerts/Admin@importerbankorg.trade.com-cert.pem
 
@@ -186,7 +186,7 @@ organizations:
     certificateAuthorities:
       - ca-exportingentityorg
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/keystore/47f9ae29d8334fa72c79b3b2b7fdf5434ab765c544bbb0145b924503e917b7b4_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/keystore/ADMIN_EXPORTINGENTITYORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/signcerts/Admin@exportingentityorg.trade.com-cert.pem
 
@@ -197,7 +197,7 @@ organizations:
     certificateAuthorities:
       - ca-carrierorg
     adminPrivateKey:
-      path: ../Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/keystore/e921a50b6f5ac04db56b18741f59774da9bf43cefc41c69502beb954b0a5d8c2_sk
+      path: ../Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/keystore/ADMIN_CARRIERORG_KEYSTORE
     signedCert:
       path: ../Trade-Network/crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/signcerts/Admin@carrierorg.trade.com-cert.pem
 
