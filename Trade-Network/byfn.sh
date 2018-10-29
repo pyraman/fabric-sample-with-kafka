@@ -584,6 +584,7 @@ fi
 #Create the network using docker compose
 if [ "${MODE}" == "up" ]; then
   networkUp
+  replaceAdminKeystores
 elif [ "${MODE}" == "down" ]; then ## Clear the network
   networkDown
 elif [ "${MODE}" == "generate" ]; then ## Clear the network
