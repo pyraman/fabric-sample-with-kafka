@@ -12,10 +12,10 @@ else
 // indicate to the application where the setup file is located so it able
 // to have the hfc load it to initalize the fabric client instance
 hfc.setConfigSetting('network-connection-profile-path',path.join(__dirname, 'artifacts' ,file));
-hfc.setConfigSetting('exporterorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exporterorg.yaml'));
+hfc.setConfigSetting('ExporterOrg-connection-profile-path',path.join(__dirname, 'artifacts', 'exporterorg.yaml'));
 hfc.setConfigSetting('exporterbankorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exporterbankorg.yaml'));
 
-hfc.setConfigSetting('importerorg-connection-profile-path',path.join(__dirname, 'artifacts', 'importerorg.yaml'));
+hfc.setConfigSetting('ImporterOrg-connection-profile-path',path.join(__dirname, 'artifacts', 'importerorg.yaml'));
 hfc.setConfigSetting('importerbankorg-connection-profile-path',path.join(__dirname, 'artifacts', 'importerbankorg.yaml'));
 
 hfc.setConfigSetting('exportingentityorg-connection-profile-path',path.join(__dirname, 'artifacts', 'exportingentityorg.yaml'));

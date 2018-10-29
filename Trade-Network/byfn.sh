@@ -250,6 +250,53 @@ function networkDown() {
     rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
   fi
 }
+
+function replaceAdminKeystores(){
+  
+  ARCH=$(uname -s | grep Darwin)
+  if [ "$ARCH" == "Darwin" ]; then
+    OPTS="-it"
+  else
+    OPTS="-i"
+  fi
+
+  CURRENT_DIR=$PWD
+  cd crypto-config/peerOrganizations/exporterorg.trade.com/users/Admin@exporterorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_EXPORTERORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/exporterbankorg.trade.com/users/Admin@exporterbankorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_EXPORTERBANKORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/importerorg.trade.com/users/Admin@importerorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_IMPORTERORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/importerbankorg.trade.com/users/Admin@importerbankorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_IMPORTERBANKORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/exportingentityorg.trade.com/users/Admin@exportingentityorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_EXPORTINGENTITYORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/carrierorg.trade.com/users/Admin@carrierorg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_CARRIERORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+
+  cd crypto-config/peerOrganizations/regulatororg.trade.com/users/Admin@regulatororg.trade.com/msp/keystore/
+  PRIV_KEY=$(ls *_sk)
+  cd "$CURRENT_DIR"
+  sed $OPTS "s/ADMIN_REGULATORORG_KEYSTORE/${PRIV_KEY}/g" ../balance-transfer/artifacts/network-config.yaml
+}
+
 function replacePrivateKey() {
   # sed on MacOSX does not support -i flag with a null extension. We will use
   # 't' for our back-up's extension and delete it at the end of the function
@@ -478,6 +525,8 @@ elif [ "$MODE" == "restart" ]; then
   EXPMODE="Restarting"
 elif [ "$MODE" == "replacePrivateKey" ]; then
   EXPMODE="replacePrivateKey"
+elif [ "$MODE" == "replaceAdminKeystores" ]; then
+  EXPMODE="replaceAdminKeystores"
 elif [ "$MODE" == "generate" ]; then
   EXPMODE="Generating certs and genesis block"
 elif [ "$MODE" == "upgrade" ]; then
@@ -541,6 +590,8 @@ elif [ "${MODE}" == "generate" ]; then ## Clear the network
   generateCerts
 elif [ "${MODE}" == "replacePrivateKey" ]; then ## Clear the network
   replacePrivateKey
+elif [ "${MODE}" == "replaceAdminKeystores" ]; then ## Clear the network
+  replaceAdminKeystores
 elif [ "${MODE}" == "restart" ]; then ## Restart the network
   networkDown
   networkUp
