@@ -168,13 +168,13 @@ installChaincode() {
 
   echo "=============================== INSTALL CHAINCODE ON: $PEER.$ORG BEGIN ==============================="
   setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
-  VERSION=${3:-1.0}
+  VERSION=${5:-1.0}
   set -x
   peer chaincode install -n mycc -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
   res=$?
   set +x
   cat log.txt
-  verifyResult $res "Chaincode installation on peer${PEER}.org${ORG} has failed"
+  verifyResult $res "Chaincode installation on ${PEER}.${ORG} has failed"
   echo "======================== CHAINCODE IS INSTALLED CHAINCODE ON: $PEER.$ORG END =========================="
 
   echo
@@ -188,7 +188,7 @@ instantiateChaincode() {
 
   echo "=============================== INSTANTIATE CHAINCODE ON: $PEER.$ORG BEGIN ==============================="
   setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
-  VERSION=${3:-1.0}
+  VERSION=${5:-1.0}
 
   # while 'peer chaincode' command can get the orderer endpoint from the peer
   # (if join was successful), let's supply it directly as we know it using
@@ -205,7 +205,7 @@ instantiateChaincode() {
     set +x
   fi
   cat log.txt
-  verifyResult $res "Chaincode instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
+  verifyResult $res "Chaincode instantiation on ${PEER}.${ORG} on channel '$CHANNEL_NAME' failed"
 
   echo "======================== CHAINCODE IS INSTANTIATED CHAINCODE ON: $PEER.$ORG END =========================="
   echo
@@ -223,8 +223,8 @@ upgradeChaincode() {
   res=$?
   set +x
   cat log.txt
-  verifyResult $res "Chaincode upgrade on peer${PEER}.org${ORG} has failed"
-  echo "===================== Chaincode is upgraded on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+  verifyResult $res "Chaincode upgrade on ${PEER}.${ORG} has failed"
+  echo "===================== Chaincode is upgraded on ${PEER}.${ORG} on channel '$CHANNEL_NAME' ===================== "
   echo
 }
 
@@ -235,7 +235,7 @@ chaincodeQuery() {
   PEER0_ORG_CA=$4
   setGlobals $PEER $ORG $ORG_MSP $PEER0_ORG_CA
   EXPECTED_RESULT=$5
-  echo "===================== Querying on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'... ===================== "
+  echo "===================== Querying on ${PEER}.${ORG} on channel '$CHANNEL_NAME'... ===================== "
   local rc=1
   local starttime=$(date +%s)
 
@@ -245,7 +245,7 @@ chaincodeQuery() {
     test "$(($(date +%s) - starttime))" -lt "$TIMEOUT" -a $rc -ne 0
   do
     sleep $DELAY
-    echo "Attempting to Query peer${PEER}.org${ORG} ...$(($(date +%s) - starttime)) secs"
+    echo "Attempting to Query ${PEER}.${ORG} ...$(($(date +%s) - starttime)) secs"
     set -x
     peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["query","a"]}' >&log.txt
     res=$?
@@ -261,9 +261,9 @@ chaincodeQuery() {
   echo
   cat log.txt
   if test $rc -eq 0; then
-    echo "===================== Query successful on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+    echo "===================== Query successful on ${PEER}.${ORG} on channel '$CHANNEL_NAME' ===================== "
   else
-    echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.org${ORG} is INVALID !!!!!!!!!!!!!!!!"
+    echo "!!!!!!!!!!!!!!! Query result on ${PEER}.${ORG} is INVALID !!!!!!!!!!!!!!!!"
     echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
     echo
     exit 1
