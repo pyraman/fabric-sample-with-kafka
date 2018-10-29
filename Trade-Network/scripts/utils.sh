@@ -338,11 +338,11 @@ parsePeerConnectionParameters() {
   PEER_CONN_PARMS=""
   PEERS=""
   while [ "$#" -gt 0 ]; do
-    PEER="peer$1.org$2"
+    PEER="$1.$2"
     PEERS="$PEERS $PEER"
     PEER_CONN_PARMS="$PEER_CONN_PARMS --peerAddresses $PEER.trade.com:7051"
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "true" ]; then
-      TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER$1_ORG$2_CA")
+      TLSINFO=$(eval echo "--tlsRootCertFiles \$$1_$2_CA")
       PEER_CONN_PARMS="$PEER_CONN_PARMS $TLSINFO"
     fi
     # shift by two to get the next pair of peer/org parameters
@@ -356,14 +356,15 @@ parsePeerConnectionParameters() {
 # chaincodeInvoke <peer> <org> ...
 # Accepts as many peer/org pairs as desired and requests endorsement from each
 chaincodeInvoke() {
-  parsePeerConnectionParameters $@
-  setGlobals PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
-  res=$?
-  verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
+  #parsePeerConnectionParameters $@
+  #res=$?
+  #verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
 
   # while 'peer chaincode' command can get the orderer endpoint from the
   # peer (if join was successful), let's supply it directly as we know
   # it using the "-o" option
+
+  PEER_CONN_PARMS="--peerAddresses peer0.exporterorg.trade.com:7051 --tlsRootCertFiles $PEER0_EXPORTERORG_CA --peerAddresses peer0.importerorg.trade.com:7051 --tlsRootCertFiles $PEER0_IMPORTERORG_CA"
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
     peer chaincode invoke -o orderer.trade.com:7050 -C $CHANNEL_NAME -n mycc $PEER_CONN_PARMS -c '{"Args":["invoke","a","b","10"]}' >&log.txt
@@ -371,6 +372,8 @@ chaincodeInvoke() {
     set +x
   else
     set -x
+    echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& INVOKING CHAINCODE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    echo "PEER_CONN_PARMS: $PEER_CONN_PARMS"
     peer chaincode invoke -o orderer.trade.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc $PEER_CONN_PARMS -c '{"Args":["invoke","a","b","10"]}' >&log.txt
     res=$?
     set +x

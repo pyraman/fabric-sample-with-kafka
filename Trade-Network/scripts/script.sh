@@ -70,7 +70,6 @@ joinChannel () {
 	joinChannelWithRetry PEER1 exporterorg ExporterOrgMSP $PEER1_EXPORTERORG_CA
 	joinChannelWithRetry PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
 	joinChannelWithRetry PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
-	joinChannelWithRetry PEER1 importerorg ImporterOrgMSP $PEER1_IMPORTERORG_CA
 	joinChannelWithRetry PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
 	joinChannelWithRetry PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
 	joinChannelWithRetry PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
@@ -135,9 +134,9 @@ chaincodeQuery PEER0 regulatororg RegulatorOrgMSP $PEER0_REGULATORORG_CA 100
 
 # Invoke chaincode on peer0.exporter and peer0.importerorg
 echo "Sending invoke transaction on peer0.exporter to peer0.importerorg..."
-chaincodeInvoke
+chaincodeInvoke PEER0 ExporterOrg PEER0 ImporterOrg
 
-chaincodeQuery PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA 90
+chaincodeQuery PEER0 ExporterOrg ExporterOrgMSP $PEER0_EXPORTERORG_CA 90
 
 ## Install chaincode on peer1.importerorg
 #echo "Installing chaincode on peer1.importerorg..."
