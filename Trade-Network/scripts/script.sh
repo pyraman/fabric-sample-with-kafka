@@ -70,6 +70,7 @@ joinChannel () {
 	joinChannelWithRetry PEER1 exporterorg ExporterOrgMSP $PEER1_EXPORTERORG_CA
 	joinChannelWithRetry PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
 	joinChannelWithRetry PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
+	joinChannelWithRetry PEER1 importerorg ImporterOrgMSP $PEER1_IMPORTERORG_CA
 	joinChannelWithRetry PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
 	joinChannelWithRetry PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
 	joinChannelWithRetry PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
@@ -79,8 +80,10 @@ joinChannel () {
 updateAnchorPeers(){
 	## Set the anchor peers for each org in the channel
 	updateAnchorPeer PEER0 exporterorg ExporterOrgMSP $PEER0_EXPORTERORG_CA
+	updateAnchorPeer PEER1 exporterorg ExporterOrgMSP $PEER1_EXPORTERORG_CA
 	updateAnchorPeer PEER0 exporterbankorg ExporterBankOrgMSP $PEER0_EXPORTERBANKORG_CA
 	updateAnchorPeer PEER0 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
+	updateAnchorPeer PEER1 importerorg ImporterOrgMSP $PEER0_IMPORTERORG_CA
 	updateAnchorPeer PEER0 importerbankorg ImporterBankOrgMSP $PEER0_IMPORTERBANKORG_CA
 	updateAnchorPeer PEER0 exportingentityorg ExportingEntityOrgMSP $PEER0_EXPORTINGENTITYORG_CA
 	updateAnchorPeer PEER0 carrierorg CarrierOrgMSP $PEER0_CARRIERORG_CA
